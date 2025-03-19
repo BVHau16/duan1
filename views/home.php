@@ -1,98 +1,472 @@
-<?php include_once "header.php" ?>
-
 <main>
-    <div class="banner">
-        <div class="banner-left">
-            <img src="" alt="" id="slideshow">
-            <button id="prev"><img src="./img/arrow-previous-left-icon.png" alt=""></button>
-            <button id="next"><img src="./img/arrow-next-right-icon.png" alt=""></button>
-        </div>
-        <div class="banner-right">
-            <div class="banner-right-top">
-                <img src="img/banner2.webp" alt="">
+    <!-- hero slider area start -->
+    <section class="slider-area">
+        <div class="hero-slider-active slick-arrow-style slick-arrow-style_hero slick-dot-style">
+            <!-- single slider item start -->
+            <div class="hero-single-slide hero-overlay">
+                <div class="hero-slider-item bg-img" data-bg="./views/assets/img/banner/banner-6.jpg">
+                    <div class="container">
+                        <div class="row mt-10">
+                            <div class="col-md-12">
+                                <div class="hero-slider-content slide-1">
+                                    <h2 class="slide-title ">Iphone 15 Pro Max <span>Collection</span></h2>
+                                    <h4 class="slide-desc ">Designer Jewelry Necklaces-Bracelets-Earings</h4>
+                                    <a href="index.php?act=chitietsanpham&ma_san_pham=22" class="btn btn-hero">Xem Ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="banner-right-bottom">
-                <img src="img/banner3.webp" alt="">
+            <!-- single slider item start -->
+
+            <!-- single slider item start -->
+            <div class="hero-single-slide hero-overlay">
+                <div class="hero-slider-item bg-img" data-bg="./views/assets/img/banner/banner-8.jpg">
+                </div>
+            </div>
+            <!-- single slider item start -->
+
+            <!-- single slider item start -->
+            <div class="hero-single-slide hero-overlay">
+                <div class="hero-slider-item bg-img" data-bg="./views/assets/img/banner/banner-9.jpg">
+                </div>
+            </div>
+            <!-- single slider item end -->
+        </div>
+    </section>
+    <!-- hero slider area end -->
+    <!-- service policy area start -->
+    <div class="service-policy section-padding">
+        <div class="container">
+            <div class="row mtn-30">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="pe-7s-plane"></i>
+                        </div>
+                        <div class="policy-content">
+                            <h6>Free Shipping</h6>
+                            <p>Free shipping all order</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="pe-7s-help2"></i>
+                        </div>
+                        <div class="policy-content">
+                            <h6>Support 24/7</h6>
+                            <p>Support 24 hours a day</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="pe-7s-back"></i>
+                        </div>
+                        <div class="policy-content">
+                            <h6>Money Return</h6>
+                            <p>30 days for free return</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="pe-7s-credit"></i>
+                        </div>
+                        <div class="policy-content">
+                            <h6>100% Payment Secure</h6>
+                            <p>We ensure secure payment</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <!-- service policy area end -->
 
-    <div class="category">
-        <h2>DANH MỤC SẢN PHẨM</h2>
-        <hr>
+    <!-- banner statistics area start -->
+    <div class="banner-statistics-area">
+        <div class="container">
+            <div class="row row-20 mtn-20">
+                <div class="col-sm-6">
+                    <figure class="banner-statistics mt-20">
+                        <a href="index.php?act=shopiphone">
+                            <img src="./views/assets/img/banner/banner-12.png" alt="product banner">
+                        </a>
 
-        <ul>
-            <?php foreach ($danhmuc as $danhmuc) : ?>
-                <div class="img-danhmuc">
-                    <a href="index.php?ctl=danhmuc_sach&id_dm=<?= $danhmuc['id_dm'] ?>">
-                        <img src="img/<?= $danhmuc['img_dm'] ?>" alt="">
-                        <li><?= $danhmuc['name_dm'] ?></li>
-                    </a>
-
+                    </figure>
                 </div>
-            <?php endforeach ?>
-        </ul>
+                <div class="col-sm-6">
+                    <figure class="banner-statistics mt-20">
+                        <a href="index.php?act=shopiphone">
+                            <img src="./views/assets/img/banner/banner-2.jpg" alt="product banner">
+                        </a>
 
-    </div>
-
-
-    <article>
-        <h2>SẢN PHẨM</h2>
-        <hr>
-        <div class="books">
-            <?php foreach ($sach as $sach) : ?>
-                <div class="book">
-                    <a href="index.php?ctl=chi_tiet&id_sp=<?= $sach['id_sp'] ?>">
-                        <img src="img/<?= $sach['img_sp'] ?>" alt="">
-                        <h4><?= $sach['name_sp'] ?></h4>
-                        <p><?= number_format($sach['price_sp'], 0, '', '.') ?>đ</p>
-                        <p>-20%</p>
-                        <p><del>50.000đ</del></p>
-                    </a>
+                    </figure>
                 </div>
-            <?php endforeach ?>
+                <div class="col-sm-6">
+                    <figure class="banner-statistics mt-20">
+                        <a href="index.php?act=shopiphone">
+                            <img src="./views/assets/img/banner/banner-3.jpg" alt="product banner">
+                        </a>
 
+                    </figure>
+                </div>
+                <div class="col-sm-6">
+                    <figure class="banner-statistics mt-20">
+                        <a href="index.php?act=shopsamsung">
+                            <img src="./views/assets/img/banner/banner-14.jpg" alt="product banner">
+                        </a>
+
+                    </figure>
+                </div>
+            </div>
         </div>
-
-    </article>
-
-    <div class="new-products">
-        <h2>Sản phẩm mới</h2>
-        <hr>
-
-        <ul>
-            <?php foreach ($new_sp as $sach) : ?>
-                <div class="new-product-item">
-                    <a href="index.php?ctl=chi_tiet&id_sp=<?= $sach['id_sp'] ?>">
-                        <p class="new">NEW</p>
-                        <img src="img/<?= $sach['img_sp'] ?>" alt="">
-                        <li><?= $sach['name_sp'] ?></li>
-                    </a>
-                </div>
-            <?php endforeach ?>
-        </ul>
     </div>
+    <!-- banner statistics area end -->
 
-    <div class="top-products">
-        <h2>TOP SẢN PHẨM YÊU THÍCH</h2>
-        <hr>
-
-        <ul>
-            <?php foreach ($top_sp as $index => $sach) : ?>
-                <div class="top-product-item">
-                    <a href="index.php?ctl=chi_tiet&id_sp=<?= $sach['id_sp'] ?>">
-                        <div class="rank"><?= $index + 1 ?></div> <!-- Hiển thị thứ tự (index bắt đầu từ 0) -->
-                        <img src="img/<?= $sach['img_sp'] ?>">
-                        <li><?= $sach['name_sp'] ?></li>
-                    </a>
-
+    <!-- product area start -->
+    <section class="product-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- section title start -->
+                    <div class="section-title text-center">
+                        <h2 class="title">iphone </h2>
+                    </div>
+                    <!-- section title start -->
                 </div>
-            <?php endforeach ?>
-        </ul>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-container">
+                        <!-- product tab content start -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab1">
+                                <div class="product-carousel-4 slick-row-10 slick-arrow-style">
 
-    </div>
+                                    <?php
+
+
+                                    foreach ($product_iphone as $product) {
+                                        extract($product);
+                                        $anh = "./uploads/" . $anh_san_pham;
+                                        $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                                        // Chuyển đổi chuỗi màu sắc thành mảng
+                                        $mau_sac_arr = explode(',', $mau_sac);
+
+                                        echo '                      
+                                                <div class="product-item">
+                                                    <figure class="product-thumb">
+                                                        <a href="'.$linksp.'">
+                                                            <img class="pri-img" src="' . $anh . '" alt="product">
+                                                            <img class="sec-img" src="' . $anh . '" alt="product">
+                                                        </a>
+                                                        <div class="product-badge">
+                                                            <div class="product-label new">
+                                                                <span>new</span>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </figure>
+                                                    <div class="product-caption text-center">
+                                                        <div class="product-identity">
+                                                            <p class="manufacturer-name"><a href="'.$linksp.'">' . $ten_san_pham . '</a></p>
+                                                        </div>
+                                                        <ul class="color-categories">';
+
+                                                                                    // Đổ danh sách màu sắc
+                                                                                    foreach ($mau_sac_arr as $mau) {
+                                                                                        echo '<li class="d-inline-block mx-1">
+                                                        <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
+                                                    </li>';
+                                                                                    }
+
+                                                                                    echo '</ul>
+                                                    <h6 class="product-name">
+                                                        <a href="'.$linksp.'">' . $ten_san_pham . '</a>
+                                                    </h6>
+                                                    <div class="price-box">
+                                                        <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                                    </div>
+                                                    </div>
+                                                </div>';
+                                    }
+                                    ?>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- product tab content end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product area end -->
+
+   <!-- product area start -->
+   <section class="product-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- section title start -->
+                    <div class="section-title text-center">
+                        <h2 class="title">SamSung </h2>
+                    </div>
+                    <!-- section title start -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-container">
+                        <!-- product tab content start -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab1">
+                                <div class="product-carousel-4 slick-row-10 slick-arrow-style">
+
+                                    <?php
+
+
+                                    foreach ($product_samsung as $product) {
+                                        extract($product);
+                                        $anh = "./uploads/" . $anh_san_pham;
+                                        $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                                        // Chuyển đổi chuỗi màu sắc thành mảng
+                                        $mau_sac_arr = explode(',', $mau_sac);
+
+                                        echo '                      
+                                                <div class="product-item">
+                                                    <figure class="product-thumb">
+                                                        <a href="'.$linksp.'">
+                                                            <img class="pri-img" src="' . $anh . '" alt="product">
+                                                            <img class="sec-img" src="' . $anh . '" alt="product">
+                                                        </a>
+                                                        <div class="product-badge">
+                                                            <div class="product-label new">
+                                                                <span>new</span>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </figure>
+                                                    <div class="product-caption text-center">
+                                                        <div class="product-identity">
+                                                            <p class="manufacturer-name"><a href="'.$linksp.'">' . $ten_san_pham . '</a></p>
+                                                        </div>
+                                                        <ul class="color-categories">';
+
+                                                                                    // Đổ danh sách màu sắc
+                                                                                    foreach ($mau_sac_arr as $mau) {
+                                                                                        echo '<li class="d-inline-block mx-1">
+                                                        <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
+                                                    </li>';
+                                                                                    }
+
+                                                                                    echo '</ul>
+                                                    <h6 class="product-name">
+                                                        <a href="'.$linksp.'">' . $ten_san_pham . '</a>
+                                                    </h6>
+                                                    <div class="price-box">
+                                                        <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                                    </div>
+                                                    </div>
+                                                </div>';
+                                    }
+                                    ?>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- product tab content end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product area end -->
+
+    <!-- featured product area start -->
+    <section class="feature-product section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- section title start -->
+                    <div class="section-title text-center">
+                        <h2 class="title">Sản Phẩm Mới</h2>
+                        <p class="sub-title">Sản Phẩm Nổi Bật Mới Ra Mắt</p>
+                    </div>
+                    <!-- section title start -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-carousel-4_2 slick-row-10 slick-arrow-style">
+
+                        <?php
+                        // var_dump($loadall_product_home);
+                        foreach ($product_new as $product_new) {
+                            extract($product_new);
+                            $anh = "./uploads/" . $anh_san_pham;
+                            $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+
+                            // Chuyển đổi chuỗi màu sắc thành mảng
+                            $mau_sac_arr = explode(',', $mau_sac);
+
+                            echo '                      
+                            <div class="product-item">
+                                <figure class="product-thumb">
+                                    <a href="'.$linksp.'">
+                                        <img class="pri-img" src="' . $anh . '" alt="product">
+                                        <img class="sec-img" src="' . $anh . '" alt="product">
+                                    </a>
+                                    <div class="product-badge">
+                                        <div class="product-label new">
+                                            <span>new</span>
+                                        </div>
+                                    </div>
+                                   
+                                </figure>
+                                <div class="product-caption text-center">
+                                    <div class="product-identity">
+                                        <p class="manufacturer-name"><a href="'.$linksp.'">' . $ten_san_pham . '</a></p>
+                                    </div>
+                                    <ul class="color-categories">';
+
+                            // Đổ danh sách màu sắc
+                            foreach ($mau_sac_arr as $mau) {
+                                echo '<li class="d-inline-block mx-1">
+                                    <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
+                                </li>';
+                            }
+
+                            echo '</ul>
+                                <h6 class="product-name">
+                                    <a href="'.$linksp.'">' . $ten_san_pham . '</a>
+                                </h6>
+                                <div class="price-box">
+                                    <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                </div>
+                                </div>
+                            </div>';
+                        }
+                        ?>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- featured product area end -->
+
+    <!-- group product start -->
+    <section class="group-product-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="group-product-banner">
+                        <figure class="banner-statistics">
+                            <a href="#">
+                                <img src="./views/assets/img/banner/bannerdoc1.jpg" alt="product banner">
+                            </a>
+                           
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="categories-group-wrapper">
+                        <!-- section title start -->
+                        <div class="section-title-append">
+                            <h4>Sản Phẩm Giá Rẻ</h4>
+                            <div class="slick-append"></div>
+                        </div>
+                        <!-- section title start -->
+                    <?php foreach($product_top8_sale as $products) {
+                        extract($products);
+                        $anh = "./uploads/" . $anh_san_pham;
+                        $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                      echo'
+                        <div class="group-list-item-wrapper">
+                            <div class="group-list-carousel">
+                                <!-- group list item start -->
+                                <div class="group-slide-item">
+                                    <div class="group-item">
+                                        <div class="group-item-thumb">
+                                            <a href="'.$linksp.'">
+                                                <img src="'.$anh.'" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="group-item-desc">
+                                            <h5 class="group-product-name"><a href="'.$linksp.'">
+                                                    '.$ten_san_pham.'</a></h5>
+                                            <div class="price-box">
+                                                <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- group list item end -->
+                            </div>
+                        </div>
+                        ';
+                    } ?>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="categories-group-wrapper">
+                        <!-- section title start -->
+                        <div class="section-title-append">
+                            <h4>Iphone Giảm Giá</h4>
+                            <div class="slick-append"></div>
+                        </div>
+                        <!-- section title start -->
+
+                        <!-- group list carousel start -->
+                        <div class="group-list-item-wrapper">
+                            <div class="group-list-carousel">
+                                <!-- group list item start -->
+                                 <?php foreach($product_iphone_top8 as $products){
+                                    extract($products);
+                                     $anh = "./uploads/" . $anh_san_pham;
+                                     $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                                echo'
+                                <div class="group-slide-item">
+                                    <div class="group-item">
+                                        <div class="group-item-thumb">
+                                            <a href="'.$linksp.'">
+                                                <img src="'.$anh.'" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="group-item-desc">
+                                            <h5 class="group-product-name"><a href="'.$linksp.'">
+                                                    '.$ten_san_pham.'</a></h5>
+                                            <div class="price-box">
+                                                <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
+                            } ?>
+                                <!-- group list item end -->
+                            </div>
+                        </div>
+                        <!-- group list carousel start -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- group product end -->
 
 
 </main>
-<script src="./javaScript/javaBannerHome.js"></script>
-<?php include_once "footer.php" ?>
