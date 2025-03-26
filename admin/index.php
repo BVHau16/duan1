@@ -2,12 +2,22 @@
 session_start();
 ob_start();
 
+if ($_SESSION['user']['loai_nguoi_dung'] === 'NhanVien') {
+  
+} else {
+    // Xóa session nếu không phải nhân viên
+    unset($_SESSION['user']);
+    $_SESSION['thongbao'] = 'Bạn không có quyền truy cập!';
+    header("Location:../index.php?act=dangnhap"); // Quay lại trang đăng nhập
+    exit();
+}
 
 include "../models/pdo.php";
 include "../admin/views/layouts/header.php";
 include "../admin/views/layouts/siderbar.php";
 include "../models/danhmuc.php";
 include "../models/sanpham.php";
+include "../models/nguoidung.php";
 
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
@@ -174,7 +184,21 @@ if (isset($_GET['act'])) {
             $listsanpham = loadall_sanpham("", 0);
             include "views/sanpham/list.php";
             break;
-                   
+
+            case 'list_account':
+                $list_account = load_all_account();
+                include "views/nguoidung/list.php";
+                break;
+                
+            case 'updatetrangthai':
+                $id = $_POST['user_id']; // Lấy ID người dùng từ form
+                $new_status = ($_POST['status'] == '1') ? '1' : '0'; // Nếu giá trị 'status' là 1, trạng thái sẽ là 'Hoạt động', nếu là 0 thì 'Khóa'
+
+                // Cập nhật trạng thái trong cơ sở dữ liệu
+                updatetrangthai($new_status, $id);
+                $list_account = load_all_account();
+                include "views/nguoidung/list.php";
+                break;
                   
         default:
             include "../admin/views/home.php";

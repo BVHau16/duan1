@@ -85,8 +85,9 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <h6 class="dropdown-header">admin</h6>
-                        <a class="dropdown-item" href=""><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Đăng Xuất</span></a>
-                        <a class="dropdown-item" href=""><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Trở Lại trang chủ</span></a>
+                        <a class="dropdown-item" href="index.php?act=dangxuat"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Đăng Xuất</span></a>
+                        <a class="dropdown-item" href="../index.php"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Trở Lại trang chủ</span></a>
+                    </div>
                     </div>
                 </div>
             </div>
