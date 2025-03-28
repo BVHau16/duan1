@@ -7,7 +7,7 @@ ob_start(); // Bắt đầu bộ đệm đầu ra
 
 include './models/pdo.php';
 include './views/header.php';
-
+include './models/sanpham.php';
 include './models/nguoidung.php';
 include './models/danhmuc.php';
 
@@ -15,6 +15,36 @@ include './models/danhmuc.php';
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'shopiphone':
+            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
+                $kyw = $_POST['kyw'];
+            } else {
+                $kyw = "";
+            }
+            $product_shop_iphone = loadall_shopiphone($kyw);
+            include './views/shop/shop-iphone.php';
+        break;
+
+        case 'shopsamsung':
+            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
+                $kyw = $_POST['kyw'];
+            } else {
+                $kyw = "";
+            }
+            $product_shop_samsung = loadall_shopsamsung($kyw);
+            include './views/shop/shop-samsung.php';
+        break;
+
+        case 'shopxiaomi':
+            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
+                $kyw = $_POST['kyw'];
+            } else {
+                $kyw = "";
+            }
+            $product_shop_xiaomi = loadall_shopxiaomi($kyw);
+            include './views/shop/shop-xiaomi.php';
+        break;
+
         case 'dangky':
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
