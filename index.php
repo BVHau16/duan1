@@ -9,7 +9,7 @@ include './models/pdo.php';
 include './views/header.php';
 include './models/sanpham.php';
 include './models/nguoidung.php';
-include './models/danhmuc.php';
+// include './models/danhmuc.php';
 include './models/binhluan.php';
 
 
