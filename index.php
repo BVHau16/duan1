@@ -10,6 +10,15 @@ include './views/header.php';
 include './models/sanpham.php';
 include './models/nguoidung.php';
 include './models/danhmuc.php';
+include './models/binhluan.php';
+
+
+
+$product_new = loadall_product_home();
+$product_iphone = loadall_product_iphone();
+$product_samsung = loadall_product_samsung();
+$product_top8_sale = loadall_top8_product();
+$product_iphone_top8 =loadall_top8_iphone();
 
 
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
@@ -44,6 +53,26 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             $product_shop_xiaomi = loadall_shopxiaomi($kyw);
             include './views/shop/shop-xiaomi.php';
         break;
+
+        case 'chitietsanpham':
+            if (isset($_GET['ma_san_pham']) && ($_GET['ma_san_pham'] > 0)) {
+                $ma_san_pham = $_GET['ma_san_pham'];
+                $oneproduct = loadone_sanpham($ma_san_pham);
+                extract($oneproduct);
+                $product_cung_loai = load_product_cungloai($ma_danh_muc, $ma_san_pham);
+                $load_all_binhluan = load_all_binhluan($ma_san_pham);
+                // var_dump($product_cung_loai);
+
+                // $list_variant = load_product_variant($product_id);
+
+                // if (isset($_SESSION['username'])) {
+                //     $list_img_cart = list_img_cart($_SESSION['username']['user_id']);
+                // }
+                include './views/chitietsanpham.php';
+            } else {
+                include './views/home.php';
+            }
+            break;
 
         case 'dangky':
 
@@ -159,11 +188,11 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             break;
 
         default:
-            // include './views/home.php';
+            include './views/home.php';
             break;
     }
 } else {
-    // include './views/home.php';
+    include './views/home.php';
 }
 include './views/footer.php';
 
