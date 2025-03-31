@@ -10,6 +10,22 @@ include './views/header.php';
 
 include './models/nguoidung.php';
 include './models/danhmuc.php';
+include './models/sanpham.php';
+
+
+if (isset($_SESSION['thongbao'])) {
+    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Thông báo:</strong> ' . $_SESSION['thongbao'] . '
+          </div>';
+    unset($_SESSION['thongbao']);
+}
+
+
+$product_new = loadall_product_home();
+$product_iphone = loadall_product_iphone();
+$product_samsung = loadall_product_samsung();
+$product_top8_sale = loadall_top8_product();
+$product_iphone_top8 =loadall_top8_iphone();
 
 
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
@@ -81,7 +97,36 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             session_destroy();
             header('Location:index.php');
             break;
-        
+
+        case 'shopiphone':
+            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
+                $kyw = $_POST['kyw'];
+            } else {
+                $kyw = "";
+            }
+            $product_shop_iphone = loadall_shopiphone($kyw);
+            include './views/shop/shop-iphone.php';
+            break;
+
+        case 'shopsamsung':
+            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
+                $kyw = $_POST['kyw'];
+            } else {
+                $kyw = "";
+            }
+            $product_shop_samsung = loadall_shopsamsung($kyw);
+            include './views/shop/shop-samsung.php';
+            break;
+
+        case 'shopxiaomi':
+            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
+                $kyw = $_POST['kyw'];
+            } else {
+                $kyw = "";
+            }
+            $product_shop_xiaomi = loadall_shopxiaomi($kyw);
+            include './views/shop/shop-xiaomi.php';
+            break;
 
         case 'update_account':
 
@@ -129,11 +174,11 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             break;
 
         default:
-            // include './views/home.php';
+            include './views/home.php';
             break;
     }
 } else {
-    // include './views/home.php';
+    include './views/home.php';
 }
 include './views/footer.php';
 
