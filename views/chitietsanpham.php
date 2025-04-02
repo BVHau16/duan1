@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-lg-7">
                                 <div class="product-details-des">
-                                    <form action="" method="post">
+                                    <form action="index.php?act=addtocart" method="post">
                                         <!-- Tên nhà sản xuất -->
                                         <div class="manufacturer-name">
                                             <a href="product-details.html">HasTech</a>
@@ -92,12 +92,12 @@
                                         <!-- Hành động thêm vào giỏ hàng -->
                                         <?php if (isset($_SESSION['user'])) { ?>
                                             <div class="action_link">
-                                                <button type="" class="btn btn-cart2">Thêm Vào Giỏ Hàng</button>
+                                                <button type="submit" class="btn btn-cart2">Thêm Vào Giỏ Hàng</button>
                                             </div>
                                         <?php } else { ?>
-                                            <!-- <div class="action_link">
+                                            <div class="action_link">
                                                 <a class="btn btn-cart2" href="index.php?act=dangnhap">Đăng Nhập Để Mua Hàng</a>
-                                            </div> -->
+                                            </div>
                                         <?php } ?>
                                     </form>
 
@@ -121,9 +121,9 @@
                                         <li>
                                             <a data-bs-toggle="tab" href="#tab_two">Thông Tin</a>
                                         </li>
-                                        <!-- <li>
+                                        <li>
                                             <a data-bs-toggle="tab" href="#tab_three">Bình Luận</a>
-                                        </li> -->
+                                        </li>
                                     </ul>
                                     <div class="tab-content reviews-tab">
                                         <div class="tab-pane fade show active" id="tab_one">
@@ -144,97 +144,98 @@
                                         </div>
                                         <div class="tab-pane fade" id="tab_three">
 
-                                            <!-- <h5>Bình Luận</h5>
+                                            <h5>Bình Luận</h5>
                                             <?php
-                                            // foreach ($load_all_binhluan as $load_all_binhluan) {
-                                            //     extract($load_all_binhluan);
-                                            //     $ratingStars = '';
-                                            //     for ($i = 1; $i <= 5; $i++) {
-                                            //         if ($i <= $danh_gia) {
-                                            //             $ratingStars .= '<span class="good"><i class="fa fa-star"></i></span>';
-                                            //         } else {
-                                            //             $ratingStars .= '';
-                                            //         }
-                                            //     }
+                                            foreach ($load_all_binhluan as $load_all_binhluan) {
+                                                extract($load_all_binhluan);
 
-                                            //     echo '
-                                            //         <div class="total-reviews">
-                                            //             <div class="rev-avatar">
-                                            //                 <img src="./views/assets/img/user.jpg" alt="">
-                                            //             </div>
-                                            //             <div class="review-box">
-                                            //                 <div class="ratings">
-                                            //                     ' . $ratingStars . '
-                                            //                 </div>
-                                            //                 <div class="post-author">
-                                            //                     <p><span>' . $ten_nguoi_dung . ' -</span> ' . $ngay_binh_luan . '</p>
-                                            //                 </div>
-                                            //                 <p>' . $noi_dung . '</p>
-                                            //             </div>
-                                            //         </div>';
-                                            // } 
+                                                // Tạo biến chứa các sao tương ứng với giá trị danh_gia
+                                                $ratingStars = '';
+                                                for ($i = 1; $i <= 5; $i++) {
+                                                    if ($i <= $danh_gia) {
+                                                        $ratingStars .= '<span class="good"><i class="fa fa-star"></i></span>';
+                                                    } else {
+                                                        $ratingStars .= '';
+                                                    }
+                                                }
+
+                                                // Hiển thị bình luận với đánh giá sao
+                                                echo '
+                                                    <div class="total-reviews">
+                                                        <div class="rev-avatar">
+                                                            <img src="./views/assets/img/user.jpg" alt="">
+                                                        </div>
+                                                        <div class="review-box">
+                                                            <div class="ratings">
+                                                                ' . $ratingStars . '
+                                                            </div>
+                                                            <div class="post-author">
+                                                                <p><span>' . $ten_nguoi_dung . ' -</span> ' . $ngay_binh_luan . '</p>
+                                                            </div>
+                                                            <p>' . $noi_dung . '</p>
+                                                        </div>
+                                                    </div>';
+                                            }
                                             ?>
 
 
-                                        <?php
-                                        if (isset($_SESSION['user']['ma_nguoi_dung'])) {
-                                            $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
-                                            // Kiểm tra xem người dùng đã mua sản phẩm này hay chưa
-                                            $check_purchase = check_user_purchase($ma_nguoi_dung, $ma_san_pham);
-                                            // var_dump($check_purchase);
-                                            // die();
+                                            <?php
+                                            if (isset($_SESSION['user']['ma_nguoi_dung'])) {
+                                                $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
+                                                // Kiểm tra xem người dùng đã mua sản phẩm này hay chưa
+                                                $check_purchase = check_user_purchase($ma_nguoi_dung, $ma_san_pham);
+                                                // var_dump($check_purchase);
+                                                // die();
 
-                                            if ($check_purchase) {
-                                                // Hiển thị form bình luận
-                                                ?>
-                                                <form action="index.php?act=add_comment" method="POST" class="review-form">
-                                                    <input type="hidden" name="ma_san_pham" value="<?= $ma_san_pham ?>">
-                                                    <input type="hidden" name="ma_nguoi_dung" value="<?= $ma_nguoi_dung ?>">
-                                                    
-                                                    <div class="form-group row">
-                                                        <div class="col">
-                                                            <label class="col-form-label"><span class="text-danger">*</span> Bình Luận Của Bạn</label>
-                                                            <textarea class="form-control" name="noi_dung" required></textarea>
+                                                if ($check_purchase) {
+                                                    // Hiển thị form bình luận
+                                                    ?>
+                                                    <form action="index.php?act=add_comment" method="POST" class="review-form">
+                                                        <input type="hidden" name="ma_san_pham" value="<?= $ma_san_pham ?>">
+                                                        <input type="hidden" name="ma_nguoi_dung" value="<?= $ma_nguoi_dung ?>">
+                                                        
+                                                        <div class="form-group row">
+                                                            <div class="col">
+                                                                <label class="col-form-label"><span class="text-danger">*</span> Bình Luận Của Bạn</label>
+                                                                <textarea class="form-control" name="noi_dung" required></textarea>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                    
-                                                            <label class="col-form-label"> Đánh Giá</label>
-                                                            <div class="form-check">
-                                                                <input type="radio"  value="1" name="danh_gia">
-                                                                <label class="form-check-label" for="flexRadioDisabled">1 sao</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="radio"  value="2" name="danh_gia">
-                                                            <label class="form-check-label" for="flexRadioDisabled">2 sao</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="radio"  value="3" name="danh_gia">
-                                                            <label class="form-check-label" for="flexRadioDisabled">3 sao</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="radio"  value="4" name="danh_gia">
-                                                            <label class="form-check-label" for="flexRadioDisabled">4 sao</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input type="radio"  value="5" name="danh_gia" checked>
-                                                            <label class="form-check-label" for="flexRadioDisabled">5 sao</label>
-                                                            </div>
-                                                    
-                                                    
-                                                    </div>
-                                                    <div class="buttons">
-                                                        <button class="btn btn-sqr" type="submit">Gửi Bình Luận</button>
-                                                    </div>
-                                                </form>
-                                                <?php
+                                                        <div class="form-group row">
+                                                        
+                                                                <label class="col-form-label"> Đánh Giá</label>
+                                                                <div class="form-check">
+                                                                    <input type="radio"  value="1" name="danh_gia">
+                                                                    <label class="form-check-label" for="flexRadioDisabled">1 sao</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input type="radio"  value="2" name="danh_gia">
+                                                                <label class="form-check-label" for="flexRadioDisabled">2 sao</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input type="radio"  value="3" name="danh_gia">
+                                                                <label class="form-check-label" for="flexRadioDisabled">3 sao</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input type="radio"  value="4" name="danh_gia">
+                                                                <label class="form-check-label" for="flexRadioDisabled">4 sao</label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input type="radio"  value="5" name="danh_gia" checked>
+                                                                <label class="form-check-label" for="flexRadioDisabled">5 sao</label>
+                                                                </div>
+                                                        </div>
+                                                        <div class="buttons">
+                                                            <button class="btn btn-sqr" type="submit">Gửi Bình Luận</button>
+                                                        </div>
+                                                    </form>
+                                                    <?php
+                                                } else {
+                                                    echo '<p class="text-danger">Bạn phải mua sản phẩm này trước khi bình luận.</p>';
+                                                }
                                             } else {
-                                                echo '<p class="text-danger">Bạn phải mua sản phẩm này trước khi bình luận.</p>';
+                                                echo '<p class="text-danger">Vui lòng đăng nhập để bình luận.</p>';
                                             }
-                                        } else {
-                                            echo '<p class="text-danger">Vui lòng đăng nhập để bình luận.</p>';
-                                        }
-                                        ?>
+                                            ?>
 
                                         </div>
                                     </div>
