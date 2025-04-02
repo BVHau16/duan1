@@ -16,6 +16,7 @@ include "../models/pdo.php";
 include "../admin/views/layouts/header.php";
 include "../admin/views/layouts/siderbar.php";
 include "../models/danhmuc.php";
+include "../models/binhluan.php";
 include "../models/sanpham.php";
 include "../models/nguoidung.php";
 
@@ -23,6 +24,42 @@ if (isset($_GET['act'])) {
     $act = $_GET['act'];
     switch ($act) {
 
+
+        case 'listspcomment':
+            if (isset($_POST['listok']) && ($_POST['listok'])) {
+                $kyw = $_POST['kyw'];
+                $iddm = $_POST['iddm'];
+            } else {
+                $kyw = '';
+                $iddm = 0;
+            }
+            $listdanhmuc = loadall_danhmuc();
+            $listsanpham = loadall_sanpham();
+            include "views/binhluan/list.php";
+        break;
+
+        case 'listdetailcomment':
+            $id = $_GET['id'];
+                    
+            $listcomments = loadone_binhluan($id) ;
+            //var_dump($listcomments);
+            include "views/binhluan/detail.php";
+        break;
+        
+        case 'xoa_binhluan':
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];  // Lấy ID bình luận từ URL
+               
+                // Gọi hàm delete_binhluan() từ model để xóa bình luận
+                delete_binhluan($id);
+                $ma_san_pham = $_GET['ma_san_pham'];
+                // Chuyển hướng lại trang chi tiết bình luận (hoặc trang danh sách)
+              
+            }
+            $listcomments = loadone_binhluan($ma_san_pham) ;
+            include 'views/binhluan/detail.php';
+        break;
+            
         case 'lisdm':
             $listdanhmuc = loadall_danhmuc();
             include "views/danhmuc/list.php";
