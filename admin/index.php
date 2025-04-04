@@ -16,50 +16,25 @@ include "../models/pdo.php";
 include "../admin/views/layouts/header.php";
 include "../admin/views/layouts/siderbar.php";
 include "../models/danhmuc.php";
-include "../models/binhluan.php";
 include "../models/sanpham.php";
 include "../models/nguoidung.php";
+include "../models/binhluan.php";
+include "../models/donhang.php";
+// //controller
 
+$total_orders = count_orders_by_status('Chờ xử lý') + count_orders_by_status('Đang giao') + count_orders_by_status('Hoàn thành');
+$total_revenue = total_revenue();
+$best_selling_products = best_selling_products();
+$total_products_sold = get_total_products_sold();
+$cash_orders = count_orders_by_payment_method(1); // Thanh toán tiền mặt
+$bank_orders = count_orders_by_payment_method(0); // chuyển khoản
+$top_customer = get_top_customer();
+// var_dump($top_customer);
+// die();
 if (isset($_GET['act'])) {
     $act = $_GET['act'];
     switch ($act) {
 
-
-        case 'listspcomment':
-            if (isset($_POST['listok']) && ($_POST['listok'])) {
-                $kyw = $_POST['kyw'];
-                $iddm = $_POST['iddm'];
-            } else {
-                $kyw = '';
-                $iddm = 0;
-            }
-            $listdanhmuc = loadall_danhmuc();
-            $listsanpham = loadall_sanpham();
-            include "views/binhluan/list.php";
-        break;
-
-        case 'listdetailcomment':
-            $id = $_GET['id'];
-                    
-            $listcomments = loadone_binhluan($id) ;
-            //var_dump($listcomments);
-            include "views/binhluan/detail.php";
-        break;
-        
-        case 'xoa_binhluan':
-            if (isset($_GET['id'])) {
-                $id = $_GET['id'];  // Lấy ID bình luận từ URL
-               
-                // Gọi hàm delete_binhluan() từ model để xóa bình luận
-                delete_binhluan($id);
-                $ma_san_pham = $_GET['ma_san_pham'];
-                // Chuyển hướng lại trang chi tiết bình luận (hoặc trang danh sách)
-              
-            }
-            $listcomments = loadone_binhluan($ma_san_pham) ;
-            include 'views/binhluan/detail.php';
-        break;
-            
         case 'lisdm':
             $listdanhmuc = loadall_danhmuc();
             include "views/danhmuc/list.php";
@@ -155,7 +130,7 @@ if (isset($_GET['act'])) {
 
         // Kiểm tra sản phẩm có đang được sử dụng
         if (is_sanpham_in_use($sanpham_id)) {
-            echo "<script>alert('Sản phẩm đang được sử dụng trong giỏ hàng hoặc đơn hàng, không thể xóa!');</script>";
+            echo "<script>alert('Bạn có chắc chắn muốn xóa sản phẩm này không?');</script>";
         } else {
             delete_sanpham($sanpham_id);
            
@@ -226,8 +201,8 @@ if (isset($_GET['act'])) {
                 $list_account = load_all_account();
                 include "views/nguoidung/list.php";
                 break;
-                
-            case 'updatetrangthai':
+
+             case 'updatetrangthai':
                 $id = $_POST['user_id']; // Lấy ID người dùng từ form
                 $new_status = ($_POST['status'] == '1') ? '1' : '0'; // Nếu giá trị 'status' là 1, trạng thái sẽ là 'Hoạt động', nếu là 0 thì 'Khóa'
 
@@ -236,7 +211,74 @@ if (isset($_GET['act'])) {
                 $list_account = load_all_account();
                 include "views/nguoidung/list.php";
                 break;
+                case 'listspcomment':
+                    if (isset($_POST['listok']) && ($_POST['listok'])) {
+                        $kyw = $_POST['kyw'];
+                        $iddm = $_POST['iddm'];
+                    } else {
+                        $kyw = '';
+                        $iddm = 0;
+                    }
+                    $listdanhmuc = loadall_danhmuc();
+                    $listsanpham = loadall_sanpham();
+                    include "views/binhluan/list.php";
+                    break;
+                case 'listdetailcomment':
+                $id = $_GET['id'];
+                
+                $listcomments = loadone_binhluan($id) ;
+                //var_dump($listcomments);
+                include "views/binhluan/detail.php";
+                break;
+                case 'dangxuat';
+                session_start();
+                session_destroy();
+                header('Location:../index.php');
+                break;
+
+                case 'admin_donhang':
+                   
+                    $donhangs = get_all_donhangs(); // Lấy tất cả đơn hàng
+                    include 'views/donhang/donhang.php';
+                    break;
+                
+                case 'admin_donhang_detail':
+                    $id = $_GET['id'];
+                    $donhang = get_donhang_by_id($id); // Lấy thông tin đơn hàng
+                    $chitiets = get_chitiet_donhang_by_donhang($id); // Lấy chi tiết đơn hàng
+                    include 'views/donhang/donhang_detail.php';
+                    break;
+                
+                case 'admin_donhang_update':
+                    $id = $_GET['id'];
+                    $donhang = get_donhang_by_id($id); // Lấy thông tin đơn hàng
+                    include 'views/donhang/donhang_update.php';
+                    break;
+                
+                case 'admin_donhang_update_save':
+                    $id = $_POST['ma_don_hang'];
+                    $trang_thai = $_POST['trang_thai'];
+                    update_trang_thai_donhang($id, $trang_thai); // Cập nhật trạng thái đơn hàng
+                    $_SESSION['thongbao'] = "Sửa trạng thái thành công!";
+                    header('Location: index.php?act=admin_donhang');
+                    break;
+                    case 'xoa_binhluan':
+                        if (isset($_GET['id'])) {
+                            $id = $_GET['id'];  // Lấy ID bình luận từ URL
+                           
+                            // Gọi hàm delete_binhluan() từ model để xóa bình luận
+                            delete_binhluan($id);
+                            $ma_san_pham = $_GET['ma_san_pham'];
+                            // Chuyển hướng lại trang chi tiết bình luận (hoặc trang danh sách)
+                          
+                        }
+                        $listcomments = loadone_binhluan($ma_san_pham) ;
+                        include 'views/binhluan/detail.php';
+                        break;
+                   
                   
+                    
+
         default:
             include "../admin/views/home.php";
 
