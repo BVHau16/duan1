@@ -1,2 +1,3 @@
-<?php
-echo "123";
+<?php 
+$img_path="uploads/";
+?>
