@@ -24,6 +24,73 @@ $product_iphone_top8 =loadall_top8_iphone();
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'cart':
+            include './views/giohang.php';
+            break;
+
+        case 'addtocart':
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+
+            if (isset($_GET['act']) && $_GET['act'] === 'addtocart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id_san_pham = $_POST['ma_san_pham'];
+                $ten_san_pham = $_POST['ten_san_pham'];
+                $gia = $_POST['gia'];
+                $so_luong = (int)$_POST['so_luong'];
+                $mau_sac = $_POST['mau_sac'];
+                $anh_san_pham = $_POST['anh_san_pham'];
+
+
+                // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
+                $found = false;
+                foreach ($_SESSION['cart'] as &$item) {
+                    if ($item['id'] === $id_san_pham && $item['mau_sac'] === $mau_sac) {
+                        $item['so_luong'] += $so_luong; // Cộng dồn số lượng
+                        $found = true;
+                        break;
+                    }
+                }
+
+                // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
+                if (!$found) {
+                    $_SESSION['cart'][] = [
+                        'id' => $id_san_pham,
+                        'ten' => $ten_san_pham,
+                        'anh_san_pham' => $anh_san_pham,
+                        'gia' => $gia,
+                        'so_luong' => $so_luong,
+                        'mau_sac' => $mau_sac,
+                    ];
+                }
+
+                // Điều hướng về trang giỏ hàng hoặc sản phẩm
+                header('Location:index.php?act=cart');
+                exit();
+            }
+
+        break;
+
+        case 'removefromcart':
+            if (isset($_GET['act']) && $_GET['act'] === 'removefromcart' && isset($_GET['id']) && isset($_GET['color'])) {
+                $id = $_GET['id'];
+                $color = urldecode($_GET['color']);
+
+                // Tìm và xóa sản phẩm
+                foreach ($_SESSION['cart'] as $index => $item) {
+                    if ($item['id'] == $id && $item['mau_sac'] === $color) {
+                        unset($_SESSION['cart'][$index]);
+                        break;
+                    }
+                }
+
+                // Cập nhật lại giỏ hàng
+                $_SESSION['cart'] = array_values($_SESSION['cart']);
+                header('Location:index.php?act=cart');
+                exit();
+            }
+        break;
+
         case 'shopiphone':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
                 $kyw = $_POST['kyw'];
