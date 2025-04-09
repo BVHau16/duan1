@@ -11,6 +11,7 @@ include './models/sanpham.php';
 include './models/nguoidung.php';
 include './models/danhmuc.php';
 include './models/binhluan.php';
+include './models/donhang.php';
 
 
 
@@ -24,6 +25,51 @@ $product_iphone_top8 =loadall_top8_iphone();
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'confirmcheckout':
+            if (isset($_POST['ho_ten']) && isset($_POST['so_dien_thoai']) && isset($_POST['dia_chi']) && isset($_POST['pttt'])) {
+                // Lấy thông tin người dùng từ session
+                $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
+              
+                $tong_tien = $_POST['tong_tien']; // Lấy tổng tiền từ form
+                $pttt = $_POST['pttt'];
+                // Lưu vào bảng `donhang`
+                // var_dump($ma_nguoi_dung, $tong_tien);
+                $ma_don_hang = insert_donhang($ma_nguoi_dung, $tong_tien, $pttt);
+                
+                // var_dump($ma_don_hang);
+                // Lưu chi tiết sản phẩm vào bảng `chitietdonhang`
+                foreach ($_SESSION['cart'] as $item) {
+                    insert_chitietdonhang($ma_don_hang, $item);
+                }
+        
+                // Xóa giỏ hàng sau khi đã đặt hàng
+                unset($_SESSION['cart']);
+        
+                // Lưu thông báo vào session
+                $_SESSION['thongbao'] = "Đặt hàng thành công!";
+        
+                // Chuyển hướng về trang chủ
+                header('Location: index.php');
+                exit();
+            }
+            break;
+        
+            case 'donhangcuatoi':
+                if (isset($_SESSION['user']['ma_nguoi_dung'])) {
+                    $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];  // Lấy mã người dùng từ session
+                    $donhangs = get_donhang_by_user($ma_nguoi_dung);  // Lấy danh sách đơn hàng của người dùng
+                } else {
+                    $donhangs = [];  // Nếu người dùng chưa đăng nhập, trả về mảng rỗng
+                }
+                include './views/donhangcuatoi.php';  // Gọi view và truyền dữ liệu vào
+                break;
+
+                case 'donhang_detail':
+                    $id = $_GET['id'];
+                    $donhang = get_donhang_by_id($id); // Lấy thông tin đơn hàng
+                    $chitiets = get_chitiet_donhang_by_donhang($id); // Lấy chi tiết đơn hàng
+                    include 'views/chitietdonhang.php';
+                    break;
         case 'cart':
             include './views/giohang.php';
             break;
