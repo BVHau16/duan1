@@ -253,6 +253,14 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include './views/account/capnhattaikhoan.php';
             break;
+            case 'chinhsach':
+
+                include './views/chinhsach.php';
+                break;
+            case 'vechungtoi':
+    
+                include './views/vechungtoi.php';
+                break;
 
         default:
             include './views/home.php';
