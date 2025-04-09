@@ -14,16 +14,18 @@ include './models/binhluan.php';
 
 
 
+
 $product_new = loadall_product_home();
 $product_iphone = loadall_product_iphone();
 $product_samsung = loadall_product_samsung();
 $product_top8_sale = loadall_top8_product();
-$product_iphone_top8 =loadall_top8_iphone();
+$product_iphone_top8 = loadall_top8_iphone();
 
 
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+
         case 'shopiphone':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
                 $kyw = $_POST['kyw'];
@@ -32,7 +34,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             $product_shop_iphone = loadall_shopiphone($kyw);
             include './views/shop/shop-iphone.php';
-        break;
+            break;
 
         case 'shopsamsung':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
@@ -42,7 +44,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             $product_shop_samsung = loadall_shopsamsung($kyw);
             include './views/shop/shop-samsung.php';
-        break;
+            break;
 
         case 'shopxiaomi':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
@@ -52,7 +54,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             $product_shop_xiaomi = loadall_shopxiaomi($kyw);
             include './views/shop/shop-xiaomi.php';
-        break;
+            break;
 
         case 'chitietsanpham':
             if (isset($_GET['ma_san_pham']) && ($_GET['ma_san_pham'] > 0)) {
@@ -140,7 +142,6 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             session_destroy();
             header('Location:index.php');
             break;
-        
 
         case 'update_account':
 
