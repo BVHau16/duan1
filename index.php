@@ -11,7 +11,7 @@ include './models/sanpham.php';
 include './models/nguoidung.php';
 include './models/danhmuc.php';
 include './models/binhluan.php';
-
+include './models/donhang.php';
 
 
 
@@ -19,12 +19,123 @@ $product_new = loadall_product_home();
 $product_iphone = loadall_product_iphone();
 $product_samsung = loadall_product_samsung();
 $product_top8_sale = loadall_top8_product();
-$product_iphone_top8 = loadall_top8_iphone();
+$product_iphone_top8 =loadall_top8_iphone();
 
 
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'confirmcheckout':
+            if (isset($_POST['ho_ten']) && isset($_POST['so_dien_thoai']) && isset($_POST['dia_chi']) && isset($_POST['pttt'])) {
+                // Lấy thông tin người dùng từ session
+                $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
+              
+                $tong_tien = $_POST['tong_tien']; // Lấy tổng tiền từ form
+                $pttt = $_POST['pttt'];
+                // Lưu vào bảng `donhang`
+                // var_dump($ma_nguoi_dung, $tong_tien);
+                $ma_don_hang = insert_donhang($ma_nguoi_dung, $tong_tien, $pttt);
+                
+                // var_dump($ma_don_hang);
+                // Lưu chi tiết sản phẩm vào bảng `chitietdonhang`
+                foreach ($_SESSION['cart'] as $item) {
+                    insert_chitietdonhang($ma_don_hang, $item);
+                }
+        
+                // Xóa giỏ hàng sau khi đã đặt hàng
+                unset($_SESSION['cart']);
+        
+                // Lưu thông báo vào session
+                $_SESSION['thongbao'] = "Đặt hàng thành công!";
+        
+                // Chuyển hướng về trang chủ
+                header('Location: index.php');
+                exit();
+            }
+            break;
+        
+            case 'donhangcuatoi':
+                if (isset($_SESSION['user']['ma_nguoi_dung'])) {
+                    $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];  // Lấy mã người dùng từ session
+                    $donhangs = get_donhang_by_user($ma_nguoi_dung);  // Lấy danh sách đơn hàng của người dùng
+                } else {
+                    $donhangs = [];  // Nếu người dùng chưa đăng nhập, trả về mảng rỗng
+                }
+                include './views/donhangcuatoi.php';  // Gọi view và truyền dữ liệu vào
+                break;
+
+                case 'donhang_detail':
+                    $id = $_GET['id'];
+                    $donhang = get_donhang_by_id($id); // Lấy thông tin đơn hàng
+                    $chitiets = get_chitiet_donhang_by_donhang($id); // Lấy chi tiết đơn hàng
+                    include 'views/chitietdonhang.php';
+                    break;
+        case 'cart':
+            include './views/giohang.php';
+            break;
+
+        case 'addtocart':
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+
+            if (isset($_GET['act']) && $_GET['act'] === 'addtocart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id_san_pham = $_POST['ma_san_pham'];
+                $ten_san_pham = $_POST['ten_san_pham'];
+                $gia = $_POST['gia'];
+                $so_luong = (int)$_POST['so_luong'];
+                $mau_sac = $_POST['mau_sac'];
+                $anh_san_pham = $_POST['anh_san_pham'];
+
+
+                // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
+                $found = false;
+                foreach ($_SESSION['cart'] as &$item) {
+                    if ($item['id'] === $id_san_pham && $item['mau_sac'] === $mau_sac) {
+                        $item['so_luong'] += $so_luong; // Cộng dồn số lượng
+                        $found = true;
+                        break;
+                    }
+                }
+
+                // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
+                if (!$found) {
+                    $_SESSION['cart'][] = [
+                        'id' => $id_san_pham,
+                        'ten' => $ten_san_pham,
+                        'anh_san_pham' => $anh_san_pham,
+                        'gia' => $gia,
+                        'so_luong' => $so_luong,
+                        'mau_sac' => $mau_sac,
+                    ];
+                }
+
+                // Điều hướng về trang giỏ hàng hoặc sản phẩm
+                header('Location:index.php?act=cart');
+                exit();
+            }
+
+        break;
+
+        case 'removefromcart':
+            if (isset($_GET['act']) && $_GET['act'] === 'removefromcart' && isset($_GET['id']) && isset($_GET['color'])) {
+                $id = $_GET['id'];
+                $color = urldecode($_GET['color']);
+
+                // Tìm và xóa sản phẩm
+                foreach ($_SESSION['cart'] as $index => $item) {
+                    if ($item['id'] == $id && $item['mau_sac'] === $color) {
+                        unset($_SESSION['cart'][$index]);
+                        break;
+                    }
+                }
+
+                // Cập nhật lại giỏ hàng
+                $_SESSION['cart'] = array_values($_SESSION['cart']);
+                header('Location:index.php?act=cart');
+                exit();
+            }
+        break;
 
         case 'shopiphone':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
@@ -34,7 +145,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             $product_shop_iphone = loadall_shopiphone($kyw);
             include './views/shop/shop-iphone.php';
-            break;
+        break;
 
         case 'shopsamsung':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
@@ -44,7 +155,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             $product_shop_samsung = loadall_shopsamsung($kyw);
             include './views/shop/shop-samsung.php';
-            break;
+        break;
 
         case 'shopxiaomi':
             if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
@@ -54,7 +165,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             $product_shop_xiaomi = loadall_shopxiaomi($kyw);
             include './views/shop/shop-xiaomi.php';
-            break;
+        break;
 
         case 'chitietsanpham':
             if (isset($_GET['ma_san_pham']) && ($_GET['ma_san_pham'] > 0)) {
@@ -142,6 +253,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             session_destroy();
             header('Location:index.php');
             break;
+        
 
         case 'update_account':
 
@@ -187,6 +299,14 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             }
             include './views/account/capnhattaikhoan.php';
             break;
+            case 'chinhsach':
+
+                include './views/chinhsach.php';
+                break;
+            case 'vechungtoi':
+    
+                include './views/vechungtoi.php';
+                break;
 
         default:
             include './views/home.php';
