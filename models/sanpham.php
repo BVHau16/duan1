@@ -42,16 +42,21 @@ function delete_sanpham($ma_san_pham)
         return false;  // Nếu sản phẩm đang được sử dụng, không xóa được
     }
 
+    // Xóa các bản ghi trong bảng biến thể trước (ràng buộc khóa ngoại)
+    $sql = "DELETE FROM bienthe WHERE ma_san_pham = $ma_san_pham";
+    pdo_execute($sql);
+
     // Xóa các bản ghi trong chitietdonhang liên quan đến sản phẩm
     $sql = "DELETE FROM chitietdonhang WHERE ma_san_pham = $ma_san_pham";
     pdo_execute($sql);
 
-    // Sau đó, xóa sản phẩm khỏi bảng sanpham
+    // Xóa sản phẩm khỏi bảng sanpham
     $sql = "DELETE FROM sanpham WHERE ma_san_pham = $ma_san_pham";
     pdo_execute($sql);
 
     return true;  // Xóa thành công
 }
+
 function loadall_sanpham_top10()
 {
     $sql = "select * from sanpham where 1 order by luotxem desc limit 0,10";
@@ -369,28 +374,32 @@ function is_sanpham_in_cart($sanpham_id) {
     return false; // Không tìm thấy sản phẩm
 }
 function is_sanpham_in_use($sanpham_id) {
+    // Kiểm tra nếu ID không hợp lệ
+    if (empty($sanpham_id) || !is_numeric($sanpham_id)) {
+        return false;
+    }
+
     // Kiểm tra trong giỏ hàng
     if (is_sanpham_in_cart($sanpham_id)) {
         return true;
     }
 
-    // Kiểm tra trong đơn hàng (dữ liệu từ cơ sở dữ liệu)
+    // Kiểm tra trong đơn hàng
     $sql_order = "SELECT COUNT(*) 
                   FROM chitietdonhang 
                   JOIN donhang ON chitietdonhang.ma_don_hang = donhang.ma_don_hang
                   WHERE chitietdonhang.ma_san_pham = $sanpham_id 
-                  AND donhang.trang_thai != 'Hủy'"; // Kiểm tra trạng thái đơn hàng khác "Hủy"
+                  AND donhang.trang_thai != 'Hủy'";
 
-    // Thực thi câu truy vấn với tham số $sanpham_id
     $stmt_order = pdo_query_one($sql_order);
 
-    // Nếu có sản phẩm trong đơn hàng chưa bị hủy
-    if ($stmt_order['COUNT(*)'] > 0) {
+    if ($stmt_order && $stmt_order['COUNT(*)'] > 0) {
         return true;
     }
 
-    return false; // Sản phẩm không có trong giỏ hàng và không có trong đơn hàng chưa bị hủy
+    return false;
 }
+
 function loadall_sanphamloc($kyw = "", $ma_danh_muc = 0, $sort_price = "asc")
 {
     $sql = "SELECT * FROM sanpham WHERE 1"; // Mặc định lấy tất cả sản phẩm
