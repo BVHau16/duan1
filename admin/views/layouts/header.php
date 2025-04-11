@@ -75,7 +75,7 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="<?= $anh ?>" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="<?= $hinh ?>" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tên</span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Quản trị viên</span>

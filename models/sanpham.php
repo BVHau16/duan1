@@ -213,37 +213,7 @@ function loadall_product_samsung()
     return $list_product;
 }
 
-function loadall_shopiphone($kyw = "")
-{
-    $sql = "SELECT 
-                sanpham.ma_san_pham,
-                sanpham.ten_san_pham,
-                sanpham.anh_san_pham,
-                sanpham.gia,
-                GROUP_CONCAT(bienthe.mau_sac) AS mau_sac
-            FROM 
-                sanpham
-            INNER JOIN 
-                bienthe 
-            ON 
-                sanpham.ma_san_pham = bienthe.ma_san_pham
-            WHERE 
-                sanpham.ma_danh_muc = 1";
-
-    // Nếu có từ khóa, thêm điều kiện tìm kiếm
-    if ($kyw != "") {
-        $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
-    }
-
-    $sql .= " GROUP BY sanpham.ma_san_pham
-              ORDER BY sanpham.ma_san_pham DESC";
-
-    return pdo_query($sql);
-}
-
-
-function loadall_shopsamsung($kyw)
-{
+function loadall_shopsamsung($kyw = "", $price_range = "") {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -259,9 +229,32 @@ function loadall_shopsamsung($kyw)
             WHERE 
                 sanpham.ma_danh_muc = 2";
 
-    // Nếu có từ khóa, thêm điều kiện tìm kiếm
     if ($kyw != "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
+    }
+
+    if (!empty($price_range) && $price_range !== "all") {
+        if (is_array($price_range)) {
+            $conditions = [];
+            foreach ($price_range as $range) {
+                if (strpos($range, "+") !== false) {
+                    $price_min = str_replace("+", "", $range);
+                    if (is_numeric($price_min)) {
+                        $conditions[] = "sanpham.gia >= $price_min";
+                    }
+                } elseif (strpos($range, "-") !== false) {
+                    $parts = explode("-", $range);
+                    if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
+                        $price_min = $parts[0];
+                        $price_max = $parts[1];
+                        $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
+                    }
+                }
+            }
+            if (!empty($conditions)) {
+                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
+            }
+        }
     }
 
     $sql .= " GROUP BY sanpham.ma_san_pham
@@ -270,10 +263,7 @@ function loadall_shopsamsung($kyw)
     return $list_product;
 }
 
-
-
-function loadall_shopxiaomi($kyw)
-{
+function loadall_shopxiaomi($kyw = "", $price_range = "") {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -289,9 +279,49 @@ function loadall_shopxiaomi($kyw)
             WHERE 
                 sanpham.ma_danh_muc = 3";
 
-    // Nếu có từ khóa, thêm điều kiện tìm kiếm
     if ($kyw != "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
+    }
+
+    if ($price_range != "" && $price_range != "all") {
+        if (strpos($price_range, "+") !== false) {
+            $price_min = str_replace("+", "", $price_range);
+            $sql .= " AND sanpham.gia >= $price_min";
+        } else {
+            list($price_min, $price_max) = explode("-", $price_range);
+            $sql .= " AND sanpham.gia BETWEEN $price_min AND $price_max";
+        }
+    }
+
+    $sql .= " GROUP BY sanpham.ma_san_pham
+              ORDER BY sanpham.ma_san_pham DESC";
+    $list_product = pdo_query($sql);
+    return $list_product;
+}
+
+function loadall_shopiphone($kyw = "", $price_range = "") {
+    $sql = "SELECT 
+                sanpham.ma_san_pham,
+                sanpham.ten_san_pham,
+                sanpham.anh_san_pham,
+                sanpham.gia,
+                GROUP_CONCAT(bienthe.mau_sac) AS mau_sac
+            FROM 
+                sanpham
+            INNER JOIN 
+                bienthe 
+            ON 
+                sanpham.ma_san_pham = bienthe.ma_san_pham
+            WHERE 
+                sanpham.ma_danh_muc = 1"; // Assuming 1 is the category ID for iPhones
+
+    if ($kyw != "") {
+        $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
+    }
+
+    if ($price_range != "" && $price_range != "all") {
+        list($price_min, $price_max) = explode("-", $price_range);
+        $sql .= " AND sanpham.gia BETWEEN $price_min AND $price_max";
     }
 
     $sql .= " GROUP BY sanpham.ma_san_pham

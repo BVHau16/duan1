@@ -1575,6 +1575,26 @@ textarea:focus {
   background-color: #222222;
 }
 
+.filter-btn {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.filter-btn i {
+  font-size: 18px;
+}
+
 /*----- mobile menu start -----*/
 .mobile-header {
   padding: 10px 0;
