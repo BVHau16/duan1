@@ -19,7 +19,7 @@
                         <?php foreach ($chitiets as $item): ?>
                             <tr>
                                 <td><?= $item['ten_san_pham'] ?></td>
-                                <td><?= $item['ten_san_pham'] ?></td>
+                                <td><?= $item['so_luong'] ?></td>
                                 <td><?= $item['mau_sac'] ?></td>
                                 <td><?= number_format($item['gia'], 0, ',', '.') ?> VNĐ</td>
                                 <td><?= number_format($item['thanh_tien'], 0, ',', '.') ?> VNĐ</td>
