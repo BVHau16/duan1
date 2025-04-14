@@ -249,6 +249,8 @@ function loadall_shopsamsung($kyw = "", $price_range = "") {
                         $price_max = $parts[1];
                         $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
                     }
+                } elseif (is_numeric($range)) {
+                    $conditions[] = "sanpham.gia >= $range";
                 }
             }
             if (!empty($conditions)) {
@@ -256,6 +258,7 @@ function loadall_shopsamsung($kyw = "", $price_range = "") {
             }
         }
     }
+
 
     $sql .= " GROUP BY sanpham.ma_san_pham
               ORDER BY sanpham.ma_san_pham DESC";
@@ -283,18 +286,35 @@ function loadall_shopxiaomi($kyw = "", $price_range = "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
     }
 
-    if ($price_range != "" && $price_range != "all") {
-        if (strpos($price_range, "+") !== false) {
-            $price_min = str_replace("+", "", $price_range);
-            $sql .= " AND sanpham.gia >= $price_min";
-        } else {
-            list($price_min, $price_max) = explode("-", $price_range);
-            $sql .= " AND sanpham.gia BETWEEN $price_min AND $price_max";
+    if (!empty($price_range) && $price_range !== "all") {
+        if (is_array($price_range)) {
+            $conditions = [];
+            foreach ($price_range as $range) {
+                if (strpos($range, "+") !== false) {
+                    $price_min = str_replace("+", "", $range);
+                    if (is_numeric($price_min)) {
+                        $conditions[] = "sanpham.gia >= $price_min";
+                    }
+                } elseif (strpos($range, "-") !== false) {
+                    $parts = explode("-", $range);
+                    if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
+                        $price_min = $parts[0];
+                        $price_max = $parts[1];
+                        $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
+                    }
+                } elseif (is_numeric($range)) {
+                    $conditions[] = "sanpham.gia >= $range";
+                }
+            }
+            if (!empty($conditions)) {
+                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
+            }
         }
     }
 
+
     $sql .= " GROUP BY sanpham.ma_san_pham
-              ORDER BY sanpham.ma_san_pham DESC";
+            ORDER BY sanpham.ma_san_pham DESC";
     $list_product = pdo_query($sql);
     return $list_product;
 }
@@ -313,33 +333,56 @@ function loadall_shopiphone($kyw = "", $price_range = "") {
             ON 
                 sanpham.ma_san_pham = bienthe.ma_san_pham
             WHERE 
-                sanpham.ma_danh_muc = 1"; // Assuming 1 is the category ID for iPhones
+                sanpham.ma_danh_muc = 1"; 
 
     if ($kyw != "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
     }
 
-    if ($price_range != "" && $price_range != "all") {
-        list($price_min, $price_max) = explode("-", $price_range);
-        $sql .= " AND sanpham.gia BETWEEN $price_min AND $price_max";
+    if (!empty($price_range) && $price_range !== "all") {
+        if (is_array($price_range)) {
+            $conditions = [];
+            foreach ($price_range as $range) {
+                if (strpos($range, "+") !== false) {
+                    $price_min = str_replace("+", "", $range);
+                    if (is_numeric($price_min)) {
+                        $conditions[] = "sanpham.gia >= $price_min";
+                    }
+                } elseif (strpos($range, "-") !== false) {
+                    $parts = explode("-", $range);
+                    if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
+                        $price_min = $parts[0];
+                        $price_max = $parts[1];
+                        $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
+                    }
+                } elseif (is_numeric($range)) {
+                    $conditions[] = "sanpham.gia >= $range";
+                }
+            }
+            if (!empty($conditions)) {
+                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
+            }
+        }
     }
 
+
     $sql .= " GROUP BY sanpham.ma_san_pham
-              ORDER BY sanpham.ma_san_pham DESC";
+            ORDER BY sanpham.ma_san_pham DESC";
     $list_product = pdo_query($sql);
     return $list_product;
 }
 
- function loadall_top8_product(){
+
+function loadall_top8_product(){
     $sql = "SELECT * FROM sanpham ORDER BY gia ASC LIMIT 8" ;
     $list_top6 = pdo_query($sql);
     return$list_top6;
- }
+}
 
  function loadall_top8_iphone(){
-$sql="SELECT * FROM sanpham WHERE ten_san_pham LIKE '%iPhone%' ORDER BY gia ASC LIMIT 8";
-$list_top6_iphone = pdo_query($sql);
-return $list_top6_iphone;
+    $sql="SELECT * FROM sanpham WHERE ten_san_pham LIKE '%iPhone%' ORDER BY gia ASC LIMIT 8";
+    $list_top6_iphone = pdo_query($sql);
+    return $list_top6_iphone;
 
  }
 function loadone_sanpham($ma_san_pham)
