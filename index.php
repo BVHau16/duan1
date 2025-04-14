@@ -100,32 +100,30 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             break;
 
         case 'shopiphone':
-            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
-                $kyw = $_POST['kyw'];
-            } else {
-                $kyw = "";
-            }
-            $product_shop_iphone = loadall_shopiphone($kyw);
+            $kyw = isset($_POST['kyw']) ? $_POST['kyw'] : "";
+            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : "all";
+            $product_shop_iphone = loadall_shopiphone($kyw, $price_range);
             include './views/shop/shop-iphone.php';
             break;
 
         case 'shopsamsung':
-            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
-                $kyw = $_POST['kyw'];
-            } else {
-                $kyw = "";
+            $kyw = isset($_POST['kyw']) ? $_POST['kyw'] : "";
+            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : [];
+            $custom_min_price = isset($_POST['custom_min_price']) ? (int)$_POST['custom_min_price'] : 0;
+            $custom_max_price = isset($_POST['custom_max_price']) ? (int)$_POST['custom_max_price'] : 0;
+
+            if ($custom_min_price || $custom_max_price) {
+                $price_range = ["$custom_min_price-$custom_max_price"];
             }
-            $product_shop_samsung = loadall_shopsamsung($kyw);
+
+            $product_shop_samsung = loadall_shopsamsung($kyw, $price_range);
             include './views/shop/shop-samsung.php';
             break;
 
         case 'shopxiaomi':
-            if (isset($_POST['kyw']) && ($_POST['kyw'] != "")) {
-                $kyw = $_POST['kyw'];
-            } else {
-                $kyw = "";
-            }
-            $product_shop_xiaomi = loadall_shopxiaomi($kyw);
+            $kyw = isset($_POST['kyw']) ? $_POST['kyw'] : "";
+            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : "all";
+            $product_shop_xiaomi = loadall_shopxiaomi($kyw, $price_range);
             include './views/shop/shop-xiaomi.php';
             break;
 

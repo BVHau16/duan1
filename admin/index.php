@@ -124,18 +124,25 @@ if (isset($_GET['act'])) {
             $listdanhmuc = loadall_danhmuc();
             include "views/sanpham/add.php";
             break;
-       case 'xoasp':
-    if (isset($_GET['id']) && ($_GET['id'] > 0)) {
-        $sanpham_id = $_GET['id'];
-
-        // Kiểm tra sản phẩm có đang được sử dụng
-        if (is_sanpham_in_use($sanpham_id)) {
-            echo "<script>alert('Bạn có chắc chắn muốn xóa sản phẩm này không?');</script>";
-        } else {
-            delete_sanpham($sanpham_id);
-           
-        }
-    }
+            case 'xoasp':
+                if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                    $sanpham_id = intval($_GET['id']);
+            
+                    if (is_sanpham_in_use($sanpham_id)) {
+                        echo "<script>alert('Sản phẩm đang được sử dụng trong đơn hàng hoặc giỏ hàng, không thể xóa!');</script>";
+                    } else {
+                        delete_sanpham($sanpham_id);
+                        echo "<script>alert('Xóa sản phẩm thành công');</script>";
+                    }
+                } else {
+                    echo "<script>alert('Không xác định được sản phẩm cần xóa.');</script>";
+                }
+            
+                echo "<script>window.location.href='index.php?act=listsp';</script>";
+                exit;
+                break;
+            
+        
 
     $listdanhmuc = loadall_danhmuc();
     $listsanpham = loadall_sanpham();

@@ -42,16 +42,21 @@ function delete_sanpham($ma_san_pham)
         return false;  // Nếu sản phẩm đang được sử dụng, không xóa được
     }
 
+    // Xóa các bản ghi trong bảng biến thể trước (ràng buộc khóa ngoại)
+    $sql = "DELETE FROM bienthe WHERE ma_san_pham = $ma_san_pham";
+    pdo_execute($sql);
+
     // Xóa các bản ghi trong chitietdonhang liên quan đến sản phẩm
     $sql = "DELETE FROM chitietdonhang WHERE ma_san_pham = $ma_san_pham";
     pdo_execute($sql);
 
-    // Sau đó, xóa sản phẩm khỏi bảng sanpham
+    // Xóa sản phẩm khỏi bảng sanpham
     $sql = "DELETE FROM sanpham WHERE ma_san_pham = $ma_san_pham";
     pdo_execute($sql);
 
     return true;  // Xóa thành công
 }
+
 function loadall_sanpham_top10()
 {
     $sql = "select * from sanpham where 1 order by luotxem desc limit 0,10";
@@ -208,37 +213,7 @@ function loadall_product_samsung()
     return $list_product;
 }
 
-function loadall_shopiphone($kyw = "")
-{
-    $sql = "SELECT 
-                sanpham.ma_san_pham,
-                sanpham.ten_san_pham,
-                sanpham.anh_san_pham,
-                sanpham.gia,
-                GROUP_CONCAT(bienthe.mau_sac) AS mau_sac
-            FROM 
-                sanpham
-            INNER JOIN 
-                bienthe 
-            ON 
-                sanpham.ma_san_pham = bienthe.ma_san_pham
-            WHERE 
-                sanpham.ma_danh_muc = 1";
-
-    // Nếu có từ khóa, thêm điều kiện tìm kiếm
-    if ($kyw != "") {
-        $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
-    }
-
-    $sql .= " GROUP BY sanpham.ma_san_pham
-              ORDER BY sanpham.ma_san_pham DESC";
-
-    return pdo_query($sql);
-}
-
-
-function loadall_shopsamsung($kyw)
-{
+function loadall_shopsamsung($kyw = "", $price_range = "") {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -254,9 +229,32 @@ function loadall_shopsamsung($kyw)
             WHERE 
                 sanpham.ma_danh_muc = 2";
 
-    // Nếu có từ khóa, thêm điều kiện tìm kiếm
     if ($kyw != "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
+    }
+
+    if (!empty($price_range) && $price_range !== "all") {
+        if (is_array($price_range)) {
+            $conditions = [];
+            foreach ($price_range as $range) {
+                if (strpos($range, "+") !== false) {
+                    $price_min = str_replace("+", "", $range);
+                    if (is_numeric($price_min)) {
+                        $conditions[] = "sanpham.gia >= $price_min";
+                    }
+                } elseif (strpos($range, "-") !== false) {
+                    $parts = explode("-", $range);
+                    if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
+                        $price_min = $parts[0];
+                        $price_max = $parts[1];
+                        $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
+                    }
+                }
+            }
+            if (!empty($conditions)) {
+                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
+            }
+        }
     }
 
     $sql .= " GROUP BY sanpham.ma_san_pham
@@ -265,10 +263,7 @@ function loadall_shopsamsung($kyw)
     return $list_product;
 }
 
-
-
-function loadall_shopxiaomi($kyw)
-{
+function loadall_shopxiaomi($kyw = "", $price_range = "") {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -284,9 +279,49 @@ function loadall_shopxiaomi($kyw)
             WHERE 
                 sanpham.ma_danh_muc = 3";
 
-    // Nếu có từ khóa, thêm điều kiện tìm kiếm
     if ($kyw != "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
+    }
+
+    if ($price_range != "" && $price_range != "all") {
+        if (strpos($price_range, "+") !== false) {
+            $price_min = str_replace("+", "", $price_range);
+            $sql .= " AND sanpham.gia >= $price_min";
+        } else {
+            list($price_min, $price_max) = explode("-", $price_range);
+            $sql .= " AND sanpham.gia BETWEEN $price_min AND $price_max";
+        }
+    }
+
+    $sql .= " GROUP BY sanpham.ma_san_pham
+              ORDER BY sanpham.ma_san_pham DESC";
+    $list_product = pdo_query($sql);
+    return $list_product;
+}
+
+function loadall_shopiphone($kyw = "", $price_range = "") {
+    $sql = "SELECT 
+                sanpham.ma_san_pham,
+                sanpham.ten_san_pham,
+                sanpham.anh_san_pham,
+                sanpham.gia,
+                GROUP_CONCAT(bienthe.mau_sac) AS mau_sac
+            FROM 
+                sanpham
+            INNER JOIN 
+                bienthe 
+            ON 
+                sanpham.ma_san_pham = bienthe.ma_san_pham
+            WHERE 
+                sanpham.ma_danh_muc = 1"; // Assuming 1 is the category ID for iPhones
+
+    if ($kyw != "") {
+        $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
+    }
+
+    if ($price_range != "" && $price_range != "all") {
+        list($price_min, $price_max) = explode("-", $price_range);
+        $sql .= " AND sanpham.gia BETWEEN $price_min AND $price_max";
     }
 
     $sql .= " GROUP BY sanpham.ma_san_pham
@@ -369,28 +404,32 @@ function is_sanpham_in_cart($sanpham_id) {
     return false; // Không tìm thấy sản phẩm
 }
 function is_sanpham_in_use($sanpham_id) {
+    // Kiểm tra nếu ID không hợp lệ
+    if (empty($sanpham_id) || !is_numeric($sanpham_id)) {
+        return false;
+    }
+
     // Kiểm tra trong giỏ hàng
     if (is_sanpham_in_cart($sanpham_id)) {
         return true;
     }
 
-    // Kiểm tra trong đơn hàng (dữ liệu từ cơ sở dữ liệu)
+    // Kiểm tra trong đơn hàng
     $sql_order = "SELECT COUNT(*) 
                   FROM chitietdonhang 
                   JOIN donhang ON chitietdonhang.ma_don_hang = donhang.ma_don_hang
                   WHERE chitietdonhang.ma_san_pham = $sanpham_id 
-                  AND donhang.trang_thai != 'Hủy'"; // Kiểm tra trạng thái đơn hàng khác "Hủy"
+                  AND donhang.trang_thai != 'Hủy'";
 
-    // Thực thi câu truy vấn với tham số $sanpham_id
     $stmt_order = pdo_query_one($sql_order);
 
-    // Nếu có sản phẩm trong đơn hàng chưa bị hủy
-    if ($stmt_order['COUNT(*)'] > 0) {
+    if ($stmt_order && $stmt_order['COUNT(*)'] > 0) {
         return true;
     }
 
-    return false; // Sản phẩm không có trong giỏ hàng và không có trong đơn hàng chưa bị hủy
+    return false;
 }
+
 function loadall_sanphamloc($kyw = "", $ma_danh_muc = 0, $sort_price = "asc")
 {
     $sql = "SELECT * FROM sanpham WHERE 1"; // Mặc định lấy tất cả sản phẩm
