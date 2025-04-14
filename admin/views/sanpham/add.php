@@ -73,7 +73,7 @@
                             <div class="flex mt-3">
                                 <input class="btn btn-success" type="submit" name="themmoi" value="Thêm mới" style="width: auto;">
                                 <input class="btn btn-warning" type="reset" value="Nhập lại" style="width: auto;">
-                                <a href="index.php?act=listsp"><input  class="btn btn-primary" type="button" value="danhsach"></a>
+                                <a href="index.php?act=listsp"><input  class="btn btn-primary" type="button" value="Danh sách"></a>
                             </div>
                             <?php
                             if (isset($thongbao) && ($thongbao != "")) echo $thongbao;

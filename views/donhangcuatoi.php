@@ -32,19 +32,17 @@
                                                     <td><?= date('d-m-Y', strtotime($donhang['ngay_dat'])); ?></td>
                                                     <td><?=  number_format($donhang['tong_tien'], 0, ',', '.'); ?> VND</td>
                                                     <td>
-                                                        <?=
-
-                                                         $donhang['trang_thai'];
+                                                        <?= $donhang['trang_thai'];
                                                         ?>
                                                     </td>
                                                     <td>
-                                                        <?=
-
-                                                         $donhang['pttt'] == 0 ? 'Thanh toán bằng chuyển khoản' : 'Thanh toán bằng tiền mặt' ;
+                                                        <?= $donhang['pttt'] == 0 ? 'Thanh toán bằng chuyển khoản' : 'Thanh toán bằng tiền mặt' ;
                                                         ?>
                                                     </td>
                                                     <td>
-                                                    <a class="btn btn-sqr" href="index.php?act=donhang_detail&id=<?= $donhang['ma_don_hang'] ?>">Xem chi tiết</a>
+                                                        <a class="btn btn-sqr" href="index.php?act=donhang_detail&id=<?= $donhang['ma_don_hang'] ?>">Xem chi tiết</a>
+                                                        <a class="btn btn-sqr" href="index.php?act=huy_don&id=<?= $donhang['ma_don_hang'] ?>" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?');">Hủy đơn</a>
+
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

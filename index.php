@@ -32,6 +32,15 @@ $product_iphone_top8 =loadall_top8_iphone();
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'huy_don':
+            if (isset($_GET['id'])) {
+                $ma_don_hang = $_GET['id'];
+                huy_donhang($ma_don_hang);
+                header('Location: index.php?act=donhang'); // quay lại danh sách đơn hàng
+                exit;
+            }
+            break;
+        
         case 'dangky':
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

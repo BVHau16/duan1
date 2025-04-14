@@ -102,6 +102,12 @@ function get_top_customer() {
     return pdo_query_one($sql);
 }
 
+function huy_donhang($ma_don_hang) {
+     $sql = "UPDATE donhang SET trang_thai = 'Đã hủy' WHERE ma_don_hang = ? AND trang_thai = 'Chờ xác nhận'";
+    // $sql = "UPDATE donhang SET trang_thai = 3 WHERE ma_don_hang = ? AND trang_thai = 0";
+
+    pdo_execute($sql, $ma_don_hang);
+}
 
 
 
