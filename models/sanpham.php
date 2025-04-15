@@ -27,7 +27,7 @@ function insert_sanpham($ten_san_pham, $hinh, $giasp, $mo_ta, $ma_danh_muc, $mau
         echo "Lỗi: Không thể thêm sản phẩm.";
     }
 
-    return $sql;
+    return $ma_san_pham;
 }
 
 function insert_bienthe($ma_san_pham, $mau_sac, $so_luong)
@@ -76,7 +76,7 @@ function loadall_sanpham($kyw = "", $ma_danh_muc = 0)
         $sql .= " and ten_san_pham like '%" . $kyw . "%'";
     }
     if ($ma_danh_muc > 0) {
-        $sql .= " and ma$ma_danh_muc ='" . $ma_danh_muc . "'";
+        $sql .= " and ma_danh_muc = " . $ma_danh_muc;
     }
     $sql .= "order by ma_san_pham asc";
     $listsanpham = pdo_query($sql);
@@ -85,7 +85,7 @@ function loadall_sanpham($kyw = "", $ma_danh_muc = 0)
 function load_ten_dm($ma_danh_muc)
 {
     if ($ma_danh_muc > 0) {
-        $sql = "select * from danhmucsanpham where ma_san_pham=" . $ma_danh_muc;
+        $sql = "select * from danhmucsanpham where ma_danh_muc = " . $ma_danh_muc;
         $dm = pdo_query_one($sql);
         extract($dm);
         return $ten_san_pham;
@@ -492,5 +492,16 @@ function loadall_sanphamloc($kyw = "", $ma_danh_muc = 0, $sort_price = "asc")
 
     $listsanpham = pdo_query($sql); // Thực thi câu truy vấn
     return $listsanpham; // Trả về danh sách sản phẩm đã lọc
+}
+function get_so_luong_ton_kho($ma_san_pham, $mau_sac) {
+    global $pdo;
+    $sql = "SELECT so_luong FROM bienthe WHERE ma_san_pham = ? AND mau_sac = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$ma_san_pham, $mau_sac]);
+    return $stmt->fetchColumn(); // trả về số lượng tồn
+}
+function load_bienthe_by_product($ma_san_pham) {
+    $sql = "SELECT mau_sac, so_luong FROM bienthe WHERE ma_san_pham = ?";
+    return pdo_query($sql, $ma_san_pham);
 }
 

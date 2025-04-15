@@ -136,18 +136,27 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include './views/shop/shop-xiaomi.php';
             break;
 
-        case 'chitietsanpham':
-            if (isset($_GET['ma_san_pham']) && ($_GET['ma_san_pham'] > 0)) {
-                $ma_san_pham = $_GET['ma_san_pham'];
-                $oneproduct = loadone_sanpham($ma_san_pham);
-                extract($oneproduct);
-                $product_cung_loai = load_product_cungloai($ma_danh_muc, $ma_san_pham);
-                $load_all_binhluan = load_all_binhluan($ma_san_pham);
-                include './views/chitietsanpham.php';
-            } else {
-                include './views/home.php';
-            }
-            break;
+            case 'chitietsanpham':
+                if (isset($_GET['ma_san_pham']) && ($_GET['ma_san_pham'] > 0)) {
+                    $ma_san_pham = $_GET['ma_san_pham'];
+                    $oneproduct = loadone_sanpham($ma_san_pham);
+                    extract($oneproduct);
+            
+                    // 🟡 Lấy danh sách biến thể và gộp theo màu
+                    $list_bienthe = load_bienthe_by_product($ma_san_pham); // bạn cần có hàm này
+                    $bienthe_theo_mau = [];
+                    foreach ($list_bienthe as $bt) {
+                        $bienthe_theo_mau[$bt['mau_sac']] = $bt['so_luong'];
+                    }
+            
+                    $product_cung_loai = load_product_cungloai($ma_danh_muc, $ma_san_pham);
+                    $load_all_binhluan = load_all_binhluan($ma_san_pham);
+                    include './views/chitietsanpham.php';
+                } else {
+                    include './views/home.php';
+                }
+                break;
+            
         case 'chinhsach':
 
             include './views/chinhsach.php';
@@ -158,19 +167,20 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             break;
 
         case 'addtocart':
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-
-            if (isset($_GET['act']) && $_GET['act'] === 'addtocart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['ma_san_pham']) && isset($_POST['mau_sac']) && isset($_POST['so_luong'])) {
+                // Debug: kiểm tra giá trị nhận được từ form
+                echo 'Số lượng: ' . $_POST['so_luong']; // In ra giá trị để kiểm tra
+            
                 $id_san_pham = $_POST['ma_san_pham'];
-                $ten_san_pham = $_POST['ten_san_pham'];
-                $gia = $_POST['gia'];
-                $so_luong = (int)$_POST['so_luong'];
                 $mau_sac = $_POST['mau_sac'];
-                $anh_san_pham = $_POST['anh_san_pham'];
-
-
+                $so_luong = (int)$_POST['so_luong'];  // Chắc chắn rằng đây là số nguyên
+            
+                // Kiểm tra nếu số lượng hợp lệ
+                if ($so_luong <= 0) {
+                    echo 'Số lượng không hợp lệ.';
+                    exit();
+                }
+            
                 // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
                 $found = false;
                 foreach ($_SESSION['cart'] as &$item) {
@@ -180,23 +190,27 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                         break;
                     }
                 }
-
+            
                 // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
                 if (!$found) {
                     $_SESSION['cart'][] = [
                         'id' => $id_san_pham,
-                        'ten' => $ten_san_pham,
-                        'anh_san_pham' => $anh_san_pham,
-                        'gia' => $gia,
+                        'ten' => $_POST['ten_san_pham'],
+                        'gia' => $_POST['gia'],
                         'so_luong' => $so_luong,
                         'mau_sac' => $mau_sac,
+                        'anh_san_pham' => $_POST['anh_san_pham']
                     ];
                 }
-
+            
                 // Điều hướng về trang giỏ hàng hoặc sản phẩm
-                header('Location:index.php?act=cart');
+                header('Location: index.php?act=cart');
+                exit();
+            } else {
+                echo 'Dữ liệu không hợp lệ!';
                 exit();
             }
+            
 
             break;
         case 'cart':

@@ -41,68 +41,42 @@
                             </div>
                             <div class="col-lg-7">
                                 <div class="product-details-des">
-                                    <form action="index.php?act=addtocart" method="post">
-                                        <!-- Tên nhà sản xuất -->
-                                        <div class="manufacturer-name">
-                                            <a href="product-details.html">HasTech</a>
-                                        </div>
+                                <form action="index.php?act=addtocart" method="post">
+    <input type="hidden" name="ma_san_pham" value="<?= $oneproduct['ma_san_pham'] ?>">
+    <input type="hidden" name="ten_san_pham" value="<?= htmlspecialchars($oneproduct['ten_san_pham']) ?>">
+    <input type="hidden" name="gia" value="<?= $oneproduct['gia'] ?>">
+    <input type="hidden" name="anh_san_pham" value="<?= $anh ?>">
 
-                                        <!-- Tên sản phẩm -->
-                                        <h3 class="product-name"><?= htmlspecialchars($oneproduct['ten_san_pham']) ?></h3>
+    <!-- Màu sắc và số lượng -->
+    <div class="form-group">
+        <label><strong>Màu sắc:</strong></label>
+        <div class="color-options">
+            <?php
+            // Giả sử $bienthe_theo_mau là mảng với màu sắc và số lượng tồn kho
+            foreach ($bienthe_theo_mau as $mau => $so_luong_ton):
+            ?>
+                <label class="color-label">
+                    <!-- input radio được bọc trong label, không cần style="display:none;" -->
+                    <input type="radio" name="mau_sac" value="<?= $mau ?>" required>
+                    <span class="color-circle" style="background-color: <?= $mau ?>;"></span>
+                    <?= ucfirst($mau) ?>
+                </label>
+            <?php endforeach; ?>
+        </div>
+    </div>
 
-                                        <!-- Giá sản phẩm -->
-                                        <div class="price-box">
-                                            <span class="price-regular"><?= number_format($oneproduct['gia']) ?> đ</span>
-                                        </div>
+    <!-- Chọn số lượng -->
+    <div class="form-group">
+        <label for="so_luong">Số lượng:</label>
+        <input type="number" id="so_luong" name="so_luong" value="1" min="1" 
+               max="<?= $so_luong_ton ?>" required>
+    </div>
 
-                                        <!-- Mô tả sản phẩm -->
-                                        <p class="pro-desc"><?= htmlspecialchars($oneproduct['mo_ta']) ?></p>
-
-                                        <!-- Số lượng sản phẩm -->
-                                        <div class="quantity-cart-box d-flex align-items-center">
-                                            <h6 class="option-title">Số lượng:</h6>
-                                            <div class="quantity">
-                                                <div class="pro-qty">
-                                                    <input type="number" name="so_luong" value="1" min="1">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Lựa chọn màu sắc -->
-                                        <div class="pro-size">
-                                            <h6 class="option-title">Màu sắc:</h6>
-                                            <select class="nice-select" name="mau_sac" required>
-                                                <?php
-                                                $mau_sac_arr = explode(',', $oneproduct['mau_sac']);
-                                                foreach ($mau_sac_arr as $mau) {
-                                                    $mau = htmlspecialchars(trim($mau));
-                                                    echo "<option value=\"$mau\">" . ucfirst($mau) . "</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-
-                                        <!-- Các thông tin ẩn -->
-                                        <input type="hidden" name="ma_san_pham" value="<?= htmlspecialchars($oneproduct['ma_san_pham']) ?>">
-                                        <input type="hidden" name="ten_san_pham" value="<?= htmlspecialchars($oneproduct['ten_san_pham']) ?>">
-                                        <input type="hidden" name="gia" value="<?= htmlspecialchars($oneproduct['gia']) ?>">
-                                        <input type="hidden" name="anh_san_pham" value="<?= $anh ?>">
-
-
-                                        <!-- Hành động thêm vào giỏ hàng -->
-                                        <?php if (isset($_SESSION['user'])) { ?>
-                                            <div class="action_link">
-                                                <button type="submit" class="btn btn-cart2">Thêm Vào Giỏ Hàng</button>
-                                            </div>
-                                        <?php } else { ?>
-                                            <div class="action_link">
-                                                <a class="btn btn-cart2" href="index.php?act=dangnhap">Đăng Nhập Để Mua Hàng</a>
-                                            </div>
-                                        <?php } ?>
-                                    </form>
-
-
-
+    <!-- Thêm vào giỏ hàng -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-cart">Thêm vào giỏ</button>
+    </div>
+</form>
                                 </div>
                             </div>
                         </div>
