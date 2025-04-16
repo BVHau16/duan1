@@ -103,11 +103,15 @@ function get_top_customer() {
 }
 
 function huy_donhang($ma_don_hang, $ma_nguoi_dung) {
-    // Kiểm tra xem đơn hàng có thuộc về người dùng không
-    $sql_check = "SELECT * FROM donhang WHERE ma_don_hang = ? AND ma_nguoi_dung = ? AND trang_thai != 'Hủy'";
+    // Kiểm tra trạng thái đơn hàng
+    $sql_check = "SELECT trang_thai FROM donhang WHERE ma_don_hang = ? AND ma_nguoi_dung = ?";
     $donhang = pdo_query_one($sql_check, $ma_don_hang, $ma_nguoi_dung);
 
-    if ($donhang) {
+    if ($donhang && $donhang['trang_thai'] === 'Hoàn thành') {
+        return false; // Không thể hủy đơn hàng đã hoàn thành
+    }
+
+    if ($donhang && $donhang['trang_thai'] !== 'Hủy') {
         // Cập nhật trạng thái đơn hàng thành "Hủy"
         $sql_update = "UPDATE donhang SET trang_thai = 'Hủy' WHERE ma_don_hang = ?";
         pdo_execute($sql_update, $ma_don_hang);
@@ -119,5 +123,4 @@ function huy_donhang($ma_don_hang, $ma_nguoi_dung) {
 
 
 
-
-?>>>>
+?>

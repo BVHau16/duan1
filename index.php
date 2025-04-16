@@ -33,17 +33,17 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
         case 'huy_don':
-            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-                $ma_don_hang = intval($_GET['id']);
-                $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung']; // Retrieve the user ID from the session
+            if (isset($_GET['id']) && isset($_SESSION['user']['ma_nguoi_dung'])) {
+                $ma_don_hang = $_GET['id'];
+                $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
         
-                // Pass both arguments to the function
+                // Gọi hàm hủy đơn hàng
                 $result = huy_donhang($ma_don_hang, $ma_nguoi_dung);
         
                 if ($result) {
                     $_SESSION['thongbao'] = "Hủy đơn hàng thành công!";
                 } else {
-                    $_SESSION['thongbao'] = "Không thể hủy đơn hàng. Vui lòng thử lại.";
+                    $_SESSION['thongbao'] = "Không thể hủy đơn hàng. Đơn hàng đã hoàn thành hoặc không hợp lệ.";
                 }
             }
             header('Location: index.php?act=donhangcuatoi');

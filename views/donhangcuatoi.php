@@ -41,7 +41,7 @@
                                                     <td><?= $donhang['pttt'] == 0 ? 'Thanh toán bằng chuyển khoản' : 'Thanh toán bằng tiền mặt'; ?></td>
                                                     <td>
                                                         <a class="btn btn-sqr" href="index.php?act=donhang_detail&id=<?= $donhang['ma_don_hang'] ?>">Xem chi tiết</a>
-                                                        <?php if ($donhang['trang_thai'] != 'Hủy'): ?>
+                                                        <?php if ($donhang['trang_thai'] != 'Hoàn thành' && $donhang['trang_thai'] != 'Hủy'): ?>
                                                             <a class="btn btn-sqr" href="index.php?act=huy_don&id=<?= $donhang['ma_don_hang'] ?>" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?');">Hủy đơn</a>
                                                         <?php endif; ?>
                                                     </td>
