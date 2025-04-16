@@ -32,6 +32,18 @@ $product_iphone_top8 =loadall_top8_iphone();
 if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
+        case 'admin_donhang_update_save':
+            $id = $_POST['ma_don_hang'];
+            $trang_thai = $_POST['trang_thai'];
+        
+            // Gọi hàm cập nhật trạng thái
+            $message = update_trang_thai_donhang($id, $trang_thai);
+        
+            // Lưu thông báo vào session
+            $_SESSION['thongbao'] = $message;
+        
+            header('Location: index.php?act=admin_donhang');
+            break;
         case 'huy_don':
             if (isset($_GET['id']) && isset($_SESSION['user']['ma_nguoi_dung'])) {
                 $ma_don_hang = $_GET['id'];

@@ -57,8 +57,19 @@ function get_chitiet_donhang_by_donhang($id) {
 }
 
 function update_trang_thai_donhang($id, $trang_thai) {
+    // Kiểm tra trạng thái hiện tại của đơn hàng
+    $sql_check = "SELECT trang_thai FROM donhang WHERE ma_don_hang = ?";
+    $donhang = pdo_query_one($sql_check, $id);
+
+    if ($donhang && $donhang['trang_thai'] === 'Hủy') {
+        // Trả về thông báo cụ thể nếu trạng thái là "Hủy"
+        return "Không thể sửa lại trạng thái vì đơn hàng đã hủy.";
+    }
+
+    // Cập nhật trạng thái nếu không phải "Hủy" 
     $sql = "UPDATE donhang SET trang_thai = ? WHERE ma_don_hang = ?";
     pdo_execute($sql, $trang_thai, $id);
+    return "Cập nhật trạng thái thành công!";
 }
 
 function count_orders_by_status($status) {
