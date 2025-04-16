@@ -41,42 +41,43 @@
                             </div>
                             <div class="col-lg-7">
                                 <div class="product-details-des">
-                                <form action="index.php?act=addtocart" method="post">
+                                <h2 class="product-title mb-3"><?= htmlspecialchars($oneproduct['ten_san_pham']) ?></h2>
+<p class="product-price mb-4"><?= number_format($oneproduct['gia']) ?> đ</p>
+
+<form action="index.php?act=addtocart" method="post">
     <input type="hidden" name="ma_san_pham" value="<?= $oneproduct['ma_san_pham'] ?>">
     <input type="hidden" name="ten_san_pham" value="<?= htmlspecialchars($oneproduct['ten_san_pham']) ?>">
     <input type="hidden" name="gia" value="<?= $oneproduct['gia'] ?>">
     <input type="hidden" name="anh_san_pham" value="<?= $anh ?>">
 
-    <!-- Màu sắc và số lượng -->
-    <div class="form-group">
-        <label><strong>Màu sắc:</strong></label>
+    <!-- Màu sắc -->
+    <div class="form-group mb-4">
+        <label class="form-label"><strong>Màu sắc:</strong></label>
         <div class="color-options">
-            <?php
-            // Giả sử $bienthe_theo_mau là mảng với màu sắc và số lượng tồn kho
-            foreach ($bienthe_theo_mau as $mau => $so_luong_ton):
-            ?>
-                <label class="color-label">
-                    <!-- input radio được bọc trong label, không cần style="display:none;" -->
-                    <input type="radio" name="mau_sac" value="<?= $mau ?>" required>
-                    <span class="color-circle" style="background-color: <?= $mau ?>;"></span>
-                    <?= ucfirst($mau) ?>
-                </label>
-            <?php endforeach; ?>
-        </div>
+    <?php foreach ($bienthe_theo_mau as $mau => $so_luong_ton): ?>
+        <label class="color-label">
+            <input type="radio" name="mau_sac" value="<?= $mau ?>" required>
+            <span class="color-circle" style="background-color: <?= $mau ?>;"></span>
+            <?= ucfirst($mau) ?>
+        </label>
+    <?php endforeach; ?>
+</div>
+
     </div>
 
-    <!-- Chọn số lượng -->
-    <div class="form-group">
-        <label for="so_luong">Số lượng:</label>
-        <input type="number" id="so_luong" name="so_luong" value="1" min="1" 
-               max="<?= $so_luong_ton ?>" required>
+    <!-- Số lượng -->
+    <div class="form-group mb-4">
+        <label for="so_luong" class="form-label"><strong>Số lượng:</strong></label>
+        <input type="number" id="so_luong" name="so_luong" value="1" min="1"
+               max="<?= $so_luong_ton ?>" class="form-control w-25" required>
     </div>
 
     <!-- Thêm vào giỏ hàng -->
-    <div class="form-group">
-        <button type="submit" class="btn btn-cart">Thêm vào giỏ</button>
-    </div>
+    <button type="submit" class="btn btn-primary px-4 py-2">
+        <i class="fa fa-shopping-cart me-1"></i> Thêm vào giỏ
+    </button>
 </form>
+
                                 </div>
                             </div>
                         </div>
