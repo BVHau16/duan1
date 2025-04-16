@@ -19,6 +19,8 @@
     </div>
     <!-- breadcrumb area end -->
     <?php
+    require_once './models/sanpham.php'; // Ensure the model is included
+        $so_luong_ton = get_total_stock($oneproduct['ma_san_pham']); // Fetch total stock
     $anh = './uploads/' . $oneproduct['anh_san_pham'] . '';
     ?>
     <!-- page main wrapper start -->
@@ -42,41 +44,42 @@
                             <div class="col-lg-7">
                                 <div class="product-details-des">
                                 <h2 class="product-title mb-3"><?= htmlspecialchars($oneproduct['ten_san_pham']) ?></h2>
-<p class="product-price mb-4"><?= number_format($oneproduct['gia']) ?> đ</p>
+                                <p class="product-price mb-4"><?= number_format($oneproduct['gia']) ?> đ</p>
+                                <p class="product-stock mb-4"><strong>Tồn kho:</strong> <span id="stock-quantity"><?= $so_luong_ton ?></span> sản phẩm</p>
 
-<form action="index.php?act=addtocart" method="post">
-    <input type="hidden" name="ma_san_pham" value="<?= $oneproduct['ma_san_pham'] ?>">
-    <input type="hidden" name="ten_san_pham" value="<?= htmlspecialchars($oneproduct['ten_san_pham']) ?>">
-    <input type="hidden" name="gia" value="<?= $oneproduct['gia'] ?>">
-    <input type="hidden" name="anh_san_pham" value="<?= $anh ?>">
+                                <form action="index.php?act=addtocart" method="post">
+                                    <input type="hidden" name="ma_san_pham" value="<?= $oneproduct['ma_san_pham'] ?>">
+                                    <input type="hidden" name="ten_san_pham" value="<?= htmlspecialchars($oneproduct['ten_san_pham']) ?>">
+                                    <input type="hidden" name="gia" value="<?= $oneproduct['gia'] ?>">
+                                    <input type="hidden" name="anh_san_pham" value="<?= $anh ?>">
 
-    <!-- Màu sắc -->
-    <div class="form-group mb-4">
-        <label class="form-label"><strong>Màu sắc:</strong></label>
-        <div class="color-options">
-    <?php foreach ($bienthe_theo_mau as $mau => $so_luong_ton): ?>
-        <label class="color-label">
-            <input type="radio" name="mau_sac" value="<?= $mau ?>" required>
-            <span class="color-circle" style="background-color: <?= $mau ?>;"></span>
-            <?= ucfirst($mau) ?>
-        </label>
-    <?php endforeach; ?>
-</div>
+                                    <!-- Màu sắc -->
+                                    <div class="form-group mb-4">
+                                        <label class="form-label"><strong>Màu sắc:</strong></label>
+                                        <div class="color-options">
+                                    <?php foreach ($bienthe_theo_mau as $mau => $so_luong_ton): ?>
+                                        <label class="color-label">
+                                            <input type="radio" name="mau_sac" value="<?= $mau ?>" data-stock="<?= $so_luong_ton ?>" required>
+                                            <span class="color-circle" style="background-color: <?= $mau ?>;"></span>
+                                            <?= ucfirst($mau) ?>
+                                        </label>
+                                    <?php endforeach; ?>
+                                    </div>
 
-    </div>
+                                    </div>
 
-    <!-- Số lượng -->
-    <div class="form-group mb-4">
-        <label for="so_luong" class="form-label"><strong>Số lượng:</strong></label>
-        <input type="number" id="so_luong" name="so_luong" value="1" min="1"
-               max="<?= $so_luong_ton ?>" class="form-control w-25" required>
-    </div>
+                                    <!-- Số lượng -->
+                                    <div class="form-group mb-4">
+                                        <label for="so_luong" class="form-label"><strong>Số lượng:</strong></label>
+                                        <input type="number" id="so_luong" name="so_luong" value="1" min="1"
+                                            max="<?= $so_luong_ton ?>" class="form-control w-25" required>
+                                    </div>
 
-    <!-- Thêm vào giỏ hàng -->
-    <button type="submit" class="btn btn-primary px-4 py-2">
-        <i class="fa fa-shopping-cart me-1"></i> Thêm vào giỏ
-    </button>
-</form>
+                                    <!-- Thêm vào giỏ hàng -->
+                                    <button type="submit" class="btn btn-primary px-4 py-2" style="border: 1px solid #DDDDDD;">
+                                        <i class="fa fa-shopping-cart me-1"></i> Thêm vào giỏ hàng
+                                    </button>
+                                </form>
 
                                 </div>
                             </div>
@@ -302,3 +305,13 @@
     </section>
     <!-- related products area end -->
 </main>
+
+<script>
+    document.querySelectorAll('input[name="mau_sac"]').forEach(input => {
+        input.addEventListener('change', function () {
+            const stockQuantity = this.getAttribute('data-stock');
+            document.getElementById('stock-quantity').textContent = stockQuantity;
+            document.getElementById('so_luong').setAttribute('max', stockQuantity);
+        });
+    });
+</script>

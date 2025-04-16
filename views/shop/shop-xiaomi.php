@@ -103,63 +103,38 @@
 
                         <!-- product item list wrapper start -->
                         <div class="shop-product-wrap grid-view row mbn-30">
-                            <!-- product single item start -->
-                            <?php
-
-
-                            foreach ($product_shop_xiaomi as $product) {
-                                extract($product);
-                                $anh = "./uploads/" . $anh_san_pham;
-                                $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
-                                // Chuyển đổi chuỗi màu sắc thành mảng
-                                $mau_sac_arr = explode(',', $mau_sac);
-                                echo '
-                                <div class="col-lg-3 col-md-4 col-sm-6">
-                                    <!-- product grid start -->
-                                    <div class="product-item">
-                                        <figure class="product-thumb">
-                                            <a href="' . $linksp . '">
-                                                <img class="pri-img" src="' . $anh . '" alt="product">
-                                                <img class="sec-img" src="' . $anh . '" alt="product">
-                                            </a>
-                                            <div class="product-badge">
-                                                <div class="product-label new">
-                                                    <span>new</span>
+                                <?php
+                                if (empty($product_shop_xiaomi)) {
+                                    echo '<p class="text-center w-100">Không có sản phẩm nào trong khoảng giá</p>';
+                                } else {
+                                    foreach ($product_shop_xiaomi as $product) {
+                                        extract($product);
+                                        $anh = "./uploads/" . $anh_san_pham;
+                                        $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                                        // Hiển thị sản phẩm
+                                        echo '
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="product-item">
+                                                <figure class="product-thumb">
+                                                    <a href="' . $linksp . '">
+                                                        <img class="pri-img" src="' . $anh . '" alt="product">
+                                                        <img class="sec-img" src="' . $anh . '" alt="product">
+                                                    </a>
+                                                </figure>
+                                                <div class="product-caption text-center">
+                                                    <h6 class="product-name">
+                                                        <a href="' . $linksp . '">' . $ten_san_pham . '</a>
+                                                    </h6>
+                                                    <div class="price-box">
+                                                        <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                                    </div>
                                                 </div>
-                                              
                                             </div>
-                                           
-                                          
-                                        </figure>
-                                        <div class="product-caption text-center">
-                                            <div class="product-identity">
-                                             
-                                            </div>
-                                            <ul class="color-categories">';
-
-                                // Đổ danh sách màu sắc
-                                foreach ($mau_sac_arr as $mau) {
-                                    echo '<li class="d-inline-block mx-1">
-                                                        <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
-                                                    </li>';
+                                        </div>';
+                                    }
                                 }
-
-                                echo ' </ul>
-                                            <h6 class="product-name">
-                                                <a href="' . $linksp . '">' . $ten_san_pham . '</a>
-                                            </h6>
-                                            <div class="price-box">
-                                                <span class="price-regular">' . number_format($gia) . ' đ</span>
-                                             
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- product grid end -->
-                                    
-                                </div>  ';
-                            }
-                            ?>
-                        </div>
+                                ?>
+                            </div>
 
                     </div>
                 </div>

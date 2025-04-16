@@ -61,12 +61,37 @@ function update_trang_thai_donhang($id, $trang_thai) {
     $sql_check = "SELECT trang_thai FROM donhang WHERE ma_don_hang = ?";
     $donhang = pdo_query_one($sql_check, $id);
 
-    if ($donhang && $donhang['trang_thai'] === 'Hủy') {
-        // Trả về thông báo cụ thể nếu trạng thái là "Hủy"
+    if (!$donhang) {
+        return "Đơn hàng không tồn tại.";
+    }
+
+    $current_status = trim($donhang['trang_thai']); // Ensure no extra whitespace
+    $trang_thai = trim($trang_thai); // Ensure no extra whitespace
+
+    // Debugging: Log the current and new status
+    error_log("Current status: $current_status, New status: $trang_thai");
+
+
+    // Quy tắc chuyển trạng thái
+
+    // if ($current_status === 'Chờ xử lý' && !in_array($trang_thai, ['Đang giao', 'Hủy'])) {
+    //     return "Chỉ có thể chuyển trạng thái từ 'Chờ xử lý' sang 'Đang giao' hoặc 'Hủy'.";
+    // }
+
+
+    // if ($current_status === 'Đang giao' && $trang_thai !== 'Hoàn thành') {
+    //     return "Chỉ có thể chuyển trạng thái từ 'Đang giao' sang 'Hoàn thành'.";
+    // }
+
+    if ($current_status === 'Hoàn thành') {
+        return "Không thể thay đổi trạng thái của đơn hàng đã hoàn thành.";
+    }
+
+    if ($current_status === 'Hủy') {
         return "Không thể sửa lại trạng thái vì đơn hàng đã hủy.";
     }
 
-    // Cập nhật trạng thái nếu không phải "Hủy"
+    // Cập nhật trạng thái nếu hợp lệ
     $sql = "UPDATE donhang SET trang_thai = ? WHERE ma_don_hang = ?";
     pdo_execute($sql, $trang_thai, $id);
     return "Cập nhật trạng thái thành công!";

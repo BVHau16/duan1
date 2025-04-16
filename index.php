@@ -33,16 +33,28 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
         case 'admin_donhang_update_save':
-            $id = $_POST['ma_don_hang'];
-            $trang_thai = $_POST['trang_thai'];
-        
+            session_start();
+            require 'models/donhang.php';
+
+            $id = $_POST['ma_don_hang'] ?? null;
+            $trang_thai = $_POST['trang_thai'] ?? null;
+
+            // Kiểm tra dữ liệu đầu vào
+            if (!$id || !$trang_thai) {
+                $_SESSION['thongbao'] = "Dữ liệu không hợp lệ.";
+                header("Location: index.php?act=admin_donhang");
+                exit();
+            }
+
             // Gọi hàm cập nhật trạng thái
-            $message = update_trang_thai_donhang($id, $trang_thai);
-        
-            // Lưu thông báo vào session
-            $_SESSION['thongbao'] = $message;
-        
-            header('Location: index.php?act=admin_donhang');
+            $result = update_trang_thai_donhang($id, $trang_thai);
+
+            // Lưu kết quả vào session
+            $_SESSION['thongbao'] = $result;
+
+            // Redirect lại danh sách đơn hàng
+            header("Location: index.php?act=admin_donhang");
+            exit();
             break;
         case 'huy_don':
             if (isset($_GET['id']) && isset($_SESSION['user']['ma_nguoi_dung'])) {

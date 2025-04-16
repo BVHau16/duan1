@@ -529,3 +529,9 @@ function get_total_quantity_by_product() {
     return $mapSoLuong;
 }
 
+function get_total_stock($ma_san_pham) {
+    $sql = "SELECT SUM(so_luong) AS total_stock FROM bienthe WHERE ma_san_pham = ?";
+    $result = pdo_query_one($sql, $ma_san_pham);
+    return $result['total_stock'] ?? 0; 
+}
+
