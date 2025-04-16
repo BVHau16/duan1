@@ -33,12 +33,21 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
     $act = $_GET['act'];
     switch ($act) {
         case 'huy_don':
-            if (isset($_GET['id'])) {
-                $ma_don_hang = $_GET['id'];
-                huy_donhang($ma_don_hang);
-                header('Location: index.php?act=donhang'); // quay lại danh sách đơn hàng
-                exit;
+            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                $ma_don_hang = intval($_GET['id']);
+                $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung']; // Retrieve the user ID from the session
+        
+                // Pass both arguments to the function
+                $result = huy_donhang($ma_don_hang, $ma_nguoi_dung);
+        
+                if ($result) {
+                    $_SESSION['thongbao'] = "Hủy đơn hàng thành công!";
+                } else {
+                    $_SESSION['thongbao'] = "Không thể hủy đơn hàng. Vui lòng thử lại.";
+                }
             }
+            header('Location: index.php?act=donhangcuatoi');
+            exit();
             break;
         
         case 'dangky':
@@ -369,16 +378,31 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                         
                         break;
 
-
-
-        default:
-            include './views/home.php';
-            break;
-    }
-} else {
-    include './views/home.php';
-}
-include './views/footer.php';
-
-
-ob_end_flush();
+                    case 'huy_don':
+                        if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                            $ma_don_hang = intval($_GET['id']);
+                            $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung']; // Add this line to get the user ID
+                    
+                            // Pass both arguments to the function
+                            $result = huy_donhang($ma_don_hang, $ma_nguoi_dung);
+                    
+                            if ($result) {
+                                $_SESSION['thongbao'] = "Hủy đơn hàng thành công!";
+                            } else {
+                                $_SESSION['thongbao'] = "Không thể hủy đơn hàng. Vui lòng thử lại.";
+                            }
+                        }
+                        header('Location: index.php?act=donhangcuatoi');
+                        exit();
+                        break;
+                    default:
+                        include './views/home.php';
+                        break;
+                }
+            } else {
+                include './views/home.php';
+            }
+            include './views/footer.php';
+            
+            
+            ob_end_flush();

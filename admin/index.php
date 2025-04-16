@@ -96,6 +96,7 @@ if (isset($_GET['act'])) {
                 }
                 $listdanhmuc = loadall_danhmuc(); // Lấy danh sách danh mục
                 $listsanpham = loadall_sanphamloc($kyw, $iddm, $sort_price); // Lọc sản phẩm theo từ khóa, danh mục, và cách sắp xếp giá
+                $mapSoLuong = get_total_quantity_by_product(); // Fetch total quantity data
                 include "views/sanpham/list.php"; // Hiển thị danh sách sản phẩm
                 break;
         case 'addsp':

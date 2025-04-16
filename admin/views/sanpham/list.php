@@ -67,6 +67,7 @@
                                         <th>Hình</th>
                                         <th>Giá</th>
                                         <th>Danh mục</th>
+                                        <th>Số Lượng</th>
                                         <th>Hành Động</th>
                                     </tr>
                                 </thead>
@@ -87,6 +88,7 @@
 
                                         $hinh = (is_file($anh)) ? "<img src='{$anh}' height='80px'>" : "no photo";
                                         $ten_danh_muc = isset($mapDanhMuc[$ma_danh_muc]) ? $mapDanhMuc[$ma_danh_muc] : "Không rõ";
+                                        $tong_so_luong = isset($mapSoLuong[$ma_san_pham]) ? $mapSoLuong[$ma_san_pham] : 0;
 
                                         echo '<tr>
                                                 <td>' . $ma_san_pham . '</td>
@@ -94,12 +96,13 @@
                                                 <td>' . $hinh . '</td>
                                                 <td>' . number_format($gia, 0, ',', '.') . ' đ</td>
                                                 <td>' . htmlspecialchars($ten_danh_muc) . '</td>
+                                                <td>' . $tong_so_luong . '</td>
                                                 <td>
                                                     <a href="' . $suasp . '" class="btn btn-sm btn-primary">SỬA</a>
                                                     <a href="' . $xoasp . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Bạn có chắc muốn xóa?\');">XÓA</a>
                                                 </td>
                                             </tr>';
-                                    }
+                                        }
                                     ?>
                                 </tbody>
                             </table>

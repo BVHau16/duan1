@@ -13,6 +13,12 @@
                             <div class="cart-table table-responsive">
                                 <h2 class="text-center mb-4">Danh sách đơn hàng của bạn</h2>
 
+                                <?php if (isset($_SESSION['thongbao'])): ?>
+                                    <div class="alert alert-success">
+                                        <?= $_SESSION['thongbao']; unset($_SESSION['thongbao']); ?>
+                                    </div>
+                                <?php endif; ?>
+
                                 <?php if (!empty($donhangs)): ?>
                                     <table class="table table-bordered">
                                         <thead>
@@ -31,18 +37,13 @@
                                                     <td><?=  $donhang['ma_don_hang']; ?></td>
                                                     <td><?= date('d-m-Y', strtotime($donhang['ngay_dat'])); ?></td>
                                                     <td><?=  number_format($donhang['tong_tien'], 0, ',', '.'); ?> VND</td>
-                                                    <td>
-                                                        <?= $donhang['trang_thai'];
-                                                        ?>
-                                                    </td>
-                                                    <td>
-                                                        <?= $donhang['pttt'] == 0 ? 'Thanh toán bằng chuyển khoản' : 'Thanh toán bằng tiền mặt' ;
-                                                        ?>
-                                                    </td>
+                                                    <td><?= $donhang['trang_thai']; ?></td>
+                                                    <td><?= $donhang['pttt'] == 0 ? 'Thanh toán bằng chuyển khoản' : 'Thanh toán bằng tiền mặt'; ?></td>
                                                     <td>
                                                         <a class="btn btn-sqr" href="index.php?act=donhang_detail&id=<?= $donhang['ma_don_hang'] ?>">Xem chi tiết</a>
-                                                        <a class="btn btn-sqr" href="index.php?act=huy_don&id=<?= $donhang['ma_don_hang'] ?>" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?');">Hủy đơn</a>
-
+                                                        <?php if ($donhang['trang_thai'] != 'Hủy'): ?>
+                                                            <a class="btn btn-sqr" href="index.php?act=huy_don&id=<?= $donhang['ma_don_hang'] ?>" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?');">Hủy đơn</a>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -57,10 +58,7 @@
                 </div>
             </div>
         </div>
-    <?php
-    else:
-        echo "<p>Bạn cần đăng nhập để xem đơn hàng.</p>";
-    endif;
-    ?>
-
+    <?php else: ?>
+        <p>Bạn cần đăng nhập để xem đơn hàng.</p>
+    <?php endif; ?>
 </main>

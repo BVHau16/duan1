@@ -312,14 +312,14 @@ function loadall_shopxiaomi($kyw = "", $price_range = "") {
         }
     }
 
-
     $sql .= " GROUP BY sanpham.ma_san_pham
-            ORDER BY sanpham.ma_san_pham DESC";
+              ORDER BY sanpham.ma_san_pham DESC";
     $list_product = pdo_query($sql);
     return $list_product;
 }
 
-function loadall_shopiphone($kyw = "", $price_range = "") {
+
+function loadall_shopiphone($kyw = "", $price_range = "", $custom_min_price = 0, $custom_max_price = 0) {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -333,12 +333,13 @@ function loadall_shopiphone($kyw = "", $price_range = "") {
             ON 
                 sanpham.ma_san_pham = bienthe.ma_san_pham
             WHERE 
-                sanpham.ma_danh_muc = 1"; 
+                sanpham.ma_danh_muc = 1";
 
     if ($kyw != "") {
         $sql .= " AND sanpham.ten_san_pham LIKE '%" . $kyw . "%'";
     }
 
+    // Lọc theo checkbox khoảng giá
     if (!empty($price_range) && $price_range !== "all") {
         if (is_array($price_range)) {
             $conditions = [];
@@ -365,24 +366,35 @@ function loadall_shopiphone($kyw = "", $price_range = "") {
         }
     }
 
+    // ✅ Lọc theo khoảng giá tùy chỉnh
+    if ($custom_min_price > 0 || $custom_max_price > 0) {
+        if ($custom_min_price > 0 && $custom_max_price > 0) {
+            $sql .= " AND sanpham.gia BETWEEN $custom_min_price AND $custom_max_price";
+        } elseif ($custom_min_price > 0) {
+            $sql .= " AND sanpham.gia >= $custom_min_price";
+        } elseif ($custom_max_price > 0) {
+            $sql .= " AND sanpham.gia <= $custom_max_price";
+        }
+    }
 
     $sql .= " GROUP BY sanpham.ma_san_pham
-            ORDER BY sanpham.ma_san_pham DESC";
+              ORDER BY sanpham.ma_san_pham DESC";
+
     $list_product = pdo_query($sql);
     return $list_product;
 }
 
 
-function loadall_top8_product(){
+ function loadall_top8_product(){
     $sql = "SELECT * FROM sanpham ORDER BY gia ASC LIMIT 8" ;
     $list_top6 = pdo_query($sql);
     return$list_top6;
-}
+ }
 
  function loadall_top8_iphone(){
-    $sql="SELECT * FROM sanpham WHERE ten_san_pham LIKE '%iPhone%' ORDER BY gia ASC LIMIT 8";
-    $list_top6_iphone = pdo_query($sql);
-    return $list_top6_iphone;
+$sql="SELECT * FROM sanpham WHERE ten_san_pham LIKE '%iPhone%' ORDER BY gia ASC LIMIT 8";
+$list_top6_iphone = pdo_query($sql);
+return $list_top6_iphone;
 
  }
 function loadone_sanpham($ma_san_pham)
@@ -503,5 +515,17 @@ function get_so_luong_ton_kho($ma_san_pham, $mau_sac) {
 function load_bienthe_by_product($ma_san_pham) {
     $sql = "SELECT mau_sac, so_luong FROM bienthe WHERE ma_san_pham = ?";
     return pdo_query($sql, $ma_san_pham);
+}
+
+function get_total_quantity_by_product() {
+    $sql = "SELECT ma_san_pham, SUM(so_luong) AS tong_so_luong FROM bienthe GROUP BY ma_san_pham";
+    $result = pdo_query($sql);
+
+    // Map the result to an associative array
+    $mapSoLuong = [];
+    foreach ($result as $row) {
+        $mapSoLuong[$row['ma_san_pham']] = $row['tong_so_luong'];
+    }
+    return $mapSoLuong;
 }
 
