@@ -66,7 +66,7 @@ function update_trang_thai_donhang($id, $trang_thai) {
         return "Không thể sửa lại trạng thái vì đơn hàng đã hủy.";
     }
 
-    // Cập nhật trạng thái nếu không phải "Hủy" 
+    // Cập nhật trạng thái nếu không phải "Hủy"
     $sql = "UPDATE donhang SET trang_thai = ? WHERE ma_don_hang = ?";
     pdo_execute($sql, $trang_thai, $id);
     return "Cập nhật trạng thái thành công!";

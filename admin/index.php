@@ -266,8 +266,8 @@ if (isset($_GET['act'])) {
                 case 'admin_donhang_update_save':
                     $id = $_POST['ma_don_hang'];
                     $trang_thai = $_POST['trang_thai'];
-                    update_trang_thai_donhang($id, $trang_thai); // Cập nhật trạng thái đơn hàng
-                    $_SESSION['thongbao'] = "Sửa trạng thái thành công!";
+                    $message = update_trang_thai_donhang($id, $trang_thai); // Cập nhật trạng thái đơn hàng
+                    $_SESSION['thongbao'] = $message;
                     header('Location: index.php?act=admin_donhang');
                     break;
                     case 'xoa_binhluan':
