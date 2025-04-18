@@ -33,19 +33,19 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="../index.php" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="assets/images/logo/logo.png" alt="" height="22">
+                            <img src="./admin/assets/images/logo/logo1.png" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="assets/images/logo/logo.png" alt="" height="70">
+                            <img src="./admin/assets/images/logo/logo1.png" alt="" height="70">
                         </span>
                     </a>
 
                     <a href="../index.php" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="assets/images/logo/logo.png" alt="" height="22">
+                            <img src="./admin/assets/images/logo/logo1.png" alt="" height="22">
                         </span>
                         <span class="logo-lg">
-                            <img src="assets/images/logo/logo.png" alt="" height="70">
+                            <img src="./admin/assets/images/logo/logo1.png" alt="" height="70">
                         </span>
                     </a>
                 </div>
@@ -75,16 +75,21 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="<?= $hinh ?>" alt="Header Avatar">
+                        <?php 
+                        $anh = isset($_SESSION['user']['anh_dai_dien']) && !empty($_SESSION['user']['anh_dai_dien']) 
+                            ? "./uploads/" . $_SESSION['user']['anh_dai_dien'] : "Not Found";   
+                        $ten = isset($_SESSION['user']['ten']) ? htmlspecialchars($_SESSION['user']['ten']) : "Người dùng";
+                        ?>
+                            <img class="rounded-circle header-profile-user" src="<?= $anh ?>" alt="Not Found" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Tên</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Quản trị viên</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $ten ?></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Nhân Viên</span>
                             </span>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        <h6 class="dropdown-header">admin</h6>
+                        <!-- <h6 class="dropdown-header">Admin</h6> -->
                         <a class="dropdown-item" href="index.php?act=dangxuat"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Đăng Xuất</span></a>
                         <a class="dropdown-item" href="../index.php"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Trở Lại trang chủ</span></a>
                     </div>

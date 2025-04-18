@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Shop Mobile</title>
+    <title>Mobile Shop</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -63,7 +63,7 @@
                         <div class="col-lg-2">
                             <div class="logo">
                                 <a href="index.php">
-                                    <img src="./views/assets/img/logo/logo.png" alt="Brand Logo" width="80px" height="80px">
+                                    <img src="./views/assets/img/logo/logo1.png" alt="Brand Logo" width="80px" height="80px">
                                 </a>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                         <div class="mobile-main-header">
                             <div class="mobile-logo">
                                 <a href="index.html">
-                                    <img src="./views/assets/img/logo/logo.png" alt="Brand Logo">
+                                    <img src="./views/assets/img/logo/logo1.png" alt="Brand Logo">
                                 </a>
                             </div>
                             <div class="mobile-menu-toggler">
