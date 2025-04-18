@@ -77,10 +77,10 @@
                         <span class="d-flex align-items-center">
                         <?php 
                         $anh = isset($_SESSION['user']['anh_dai_dien']) && !empty($_SESSION['user']['anh_dai_dien']) 
-                            ? "./uploads/" . $_SESSION['user']['anh_dai_dien'] : "Not Found";   
-                        $ten = isset($_SESSION['user']['ten']) ? htmlspecialchars($_SESSION['user']['ten']) : "Người dùng";
+                            ? "./uploads/" . $_SESSION['user']['anh_dai_dien'] : "Not Found";
+                        $ten = isset($_SESSION['user']['ten']) ? htmlspecialchars($_SESSION['user']['ten']) : "Nhân Viên";
                         ?>
-                            <img class="rounded-circle header-profile-user" src="<?= $anh ?>" alt="Not Found" style="width: 40px; height: 40px; object-fit: cover;">
+                            <img class="rounded-circle header-profile-user" src="<?= $anh ?>" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $ten ?></span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Nhân Viên</span>
