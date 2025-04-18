@@ -1,4 +1,6 @@
 <?php
+require_once 'pdo.php';
+
 function insert_sanpham($ten_san_pham, $hinh, $giasp, $mo_ta, $ma_danh_muc, $mau_sac, $so_luong)
 {
 
@@ -533,5 +535,24 @@ function get_total_stock($ma_san_pham) {
     $sql = "SELECT SUM(so_luong) AS total_stock FROM bienthe WHERE ma_san_pham = ?";
     $result = pdo_query_one($sql, $ma_san_pham);
     return $result['total_stock'] ?? 0; 
+}
+/**
+ * Giảm số lượng tồn kho của một biến thể (bảng bienthe)
+ *
+ * @param int    $ma_san_pham   Mã sản phẩm
+ * @param string $mau_sac       Màu sắc biến thể
+ * @param int    $so_luong_giam Số lượng cần giảm
+ */
+function update_variant_stock($ma_san_pham, $mau_sac, $so_luong_giam) {
+    $sql = "UPDATE bienthe
+            SET so_luong = so_luong - :giam
+            WHERE ma_san_pham = :masp
+              AND mau_sac     = :mau";
+    $stmt = $GLOBALS['conn']->prepare($sql);
+    $stmt->execute([
+        ':giam'  => $so_luong_giam,
+        ':masp'  => $ma_san_pham,
+        ':mau'   => $mau_sac,
+    ]);
 }
 

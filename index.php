@@ -296,33 +296,34 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
             include './views/thanhtoan.php';
             break;
             case 'confirmcheckout':
-                if (isset($_POST['ho_ten']) && isset($_POST['so_dien_thoai']) && isset($_POST['dia_chi']) && isset($_POST['pttt'])) {
-                    // Lấy thông tin người dùng từ session
-                    $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
-                  
-                    $tong_tien = $_POST['tong_tien']; // Lấy tổng tiền từ form
-                    $pttt = $_POST['pttt'];
-                    // Lưu vào bảng `donhang`
-                    // var_dump($ma_nguoi_dung, $tong_tien);
-                    $ma_don_hang = insert_donhang($ma_nguoi_dung, $tong_tien, $pttt);
-                    
-                    // var_dump($ma_don_hang);
-                    // Lưu chi tiết sản phẩm vào bảng `chitietdonhang`
-                    foreach ($_SESSION['cart'] as $item) {
-                        insert_chitietdonhang($ma_don_hang, $item);
-                    }
-            
-                    // Xóa giỏ hàng sau khi đã đặt hàng
-                    unset($_SESSION['cart']);
-            
-                    // Lưu thông báo vào session
-                    $_SESSION['thongbao'] = "Đặt hàng thành công!";
-            
-                    // Chuyển hướng về trang chủ
-                    header('Location: index.php');
-                    exit();
-                }
-                break;
+    if (isset($_POST['ho_ten'], $_POST['so_dien_thoai'], $_POST['dia_chi'], $_POST['pttt'])) {
+        // 1. Lưu đơn hàng
+        $ma_nguoi_dung = $_SESSION['user']['ma_nguoi_dung'];
+        $tong_tien    = $_POST['tong_tien'];
+        $pttt         = $_POST['pttt'];
+
+        $ma_don_hang = insert_donhang($ma_nguoi_dung, $tong_tien, $pttt);
+
+        // 2. Lưu chi tiết và giảm kho
+        foreach ($_SESSION['cart'] as $item) {
+            // Lưu chi tiết đơn hàng
+            insert_chitietdonhang($ma_don_hang, $item);
+
+            // Giảm số lượng tồn kho biến thể
+            // item['id']    => ma_san_pham
+            // item['mau_sac'] => màu
+            // item['so_luong'] => số lượng mua
+            update_variant_stock($item['id'], $item['mau_sac'], $item['so_luong']);
+        }
+
+        // 3. Xóa giỏ và thông báo
+        unset($_SESSION['cart']);
+        $_SESSION['thongbao'] = "Đặt hàng thành công!";
+        header('Location: index.php');
+        exit();
+    }
+    break;
+
             
                 case 'donhangcuatoi':
                     if (isset($_SESSION['user']['ma_nguoi_dung'])) {

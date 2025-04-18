@@ -10,6 +10,7 @@ function pdo_get_connection() {
     try {
         $conn = new PDO($dburl, $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $GLOBALS['conn'] = $conn;
         return $conn;
     } catch (PDOException $e) {
         echo "Kết nối cơ sở dữ liệu thất bại: " . $e->getMessage();
