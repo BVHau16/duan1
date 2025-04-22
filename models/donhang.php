@@ -137,18 +137,22 @@ function huy_donhang($ma_don_hang, $ma_nguoi_dung) {
     $sql_check = "SELECT trang_thai FROM donhang WHERE ma_don_hang = ? AND ma_nguoi_dung = ?";
     $donhang = pdo_query_one($sql_check, $ma_don_hang, $ma_nguoi_dung);
 
-    if ($donhang && $donhang['trang_thai'] === 'Hoàn thành') {
-        return false; // Không thể hủy đơn hàng đã hoàn thành
+    if ($donhang) {
+        if ($donhang['trang_thai'] === 'Hoàn thành' || $donhang['trang_thai'] === 'Đang giao') {
+            return false; // Không thể hủy đơn hàng đã hoàn thành hoặc đang giao
+        }
+
+        if ($donhang['trang_thai'] !== 'Hủy') {
+            // Cập nhật trạng thái đơn hàng thành "Hủy"
+            $sql_update = "UPDATE donhang SET trang_thai = 'Hủy' WHERE ma_don_hang = ?";
+            pdo_execute($sql_update, $ma_don_hang);
+            return true;
+        }
     }
 
-    if ($donhang && $donhang['trang_thai'] !== 'Hủy') {
-        // Cập nhật trạng thái đơn hàng thành "Hủy"
-        $sql_update = "UPDATE donhang SET trang_thai = 'Hủy' WHERE ma_don_hang = ?";
-        pdo_execute($sql_update, $ma_don_hang);
-        return true;
-    }
     return false;
 }
+
 
 
 

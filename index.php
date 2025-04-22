@@ -67,7 +67,7 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
                 if ($result) {
                     $_SESSION['thongbao'] = "Hủy đơn hàng thành công!";
                 } else {
-                    $_SESSION['thongbao'] = "Không thể hủy đơn hàng. Đơn hàng đã hoàn thành hoặc không hợp lệ.";
+                    $_SESSION['thongbao'] = "Không thể hủy đơn hàng. Vui lòng thử lại.";
                 }
             }
             header('Location: index.php?act=donhangcuatoi');
