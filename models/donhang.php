@@ -3,7 +3,7 @@
 function insert_donhang($ma_nguoi_dung, $tong_tien,$pttt) {
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $ngay_dat = date('Y-m-d H:i:s');  // Lấy ngày giờ hiện tại
-    $trang_thai = 1;  // Giả sử trạng thái đơn hàng là 1 (chờ xử lý)
+    $trang_thai = 1;  // Giả sử trạng thái đơn hàng là 1 (Chờ xử lý)
 
     // Câu lệnh SQL để chèn dữ liệu vào bảng donhang
     $sql = "INSERT INTO donhang (ma_nguoi_dung, ngay_dat, tong_tien, trang_thai,pttt) VALUES (?, ?, ?, ?,?)";
@@ -65,23 +65,17 @@ function update_trang_thai_donhang($id, $trang_thai) {
         return "Đơn hàng không tồn tại.";
     }
 
-    $current_status = trim($donhang['trang_thai']); // Ensure no extra whitespace
-    $trang_thai = trim($trang_thai); // Ensure no extra whitespace
-
-    // Debugging: Log the current and new status
-    error_log("Current status: $current_status, New status: $trang_thai");
-
+    $current_status = trim($donhang['trang_thai']);
+    $trang_thai = trim($trang_thai);
 
     // Quy tắc chuyển trạng thái
+    if ($current_status === 'Chờ xử lý' && !in_array($trang_thai, ['Đang giao', 'Hủy'])) {
+        return "Chỉ có thể chuyển trạng thái từ 'Chờ xử lý' sang 'Đang giao' hoặc 'Hủy'.";
+    }
 
-    // if ($current_status === 'Chờ xử lý' && !in_array($trang_thai, ['Đang giao', 'Hủy'])) {
-    //     return "Chỉ có thể chuyển trạng thái từ 'Chờ xử lý' sang 'Đang giao' hoặc 'Hủy'.";
-    // }
-
-
-    // if ($current_status === 'Đang giao' && $trang_thai !== 'Hoàn thành') {
-    //     return "Chỉ có thể chuyển trạng thái từ 'Đang giao' sang 'Hoàn thành'.";
-    // }
+    if ($current_status === 'Đang giao' && $trang_thai !== 'Hoàn thành') {
+        return "Chỉ có thể chuyển trạng thái từ 'Đang giao' sang 'Hoàn thành'.";
+    }
 
     if ($current_status === 'Hoàn thành') {
         return "Không thể thay đổi trạng thái của đơn hàng đã hoàn thành.";
