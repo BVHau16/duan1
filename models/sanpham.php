@@ -268,7 +268,7 @@ function loadall_shopsamsung($kyw = "", $price_range = "") {
     return $list_product;
 }
 
-function loadall_shopxiaomi($kyw = "", $price_range = "") {
+function loadall_shopxiaomi($kyw = "", $price_range = [], $custom_min_price = 0, $custom_max_price = 0) {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -289,39 +289,37 @@ function loadall_shopxiaomi($kyw = "", $price_range = "") {
     }
 
     if (!empty($price_range) && $price_range !== "all") {
-        if (is_array($price_range)) {
-            $conditions = [];
-            foreach ($price_range as $range) {
-                if (strpos($range, "+") !== false) {
-                    $price_min = str_replace("+", "", $range);
-                    if (is_numeric($price_min)) {
-                        $conditions[] = "sanpham.gia >= $price_min";
-                    }
-                } elseif (strpos($range, "-") !== false) {
-                    $parts = explode("-", $range);
-                    if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
-                        $price_min = $parts[0];
-                        $price_max = $parts[1];
-                        $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
-                    }
-                } elseif (is_numeric($range)) {
-                    $conditions[] = "sanpham.gia >= $range";
-                }
+        $conditions = [];
+        foreach ($price_range as $range) {
+            if (strpos($range, "+") !== false) {
+                $price_min = str_replace("+", "", $range);
+                $conditions[] = "sanpham.gia >= $price_min";
+            } elseif (strpos($range, "-") !== false) {
+                [$price_min, $price_max] = explode("-", $range);
+                $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
             }
-            if (!empty($conditions)) {
-                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
-            }
+        }
+        if (!empty($conditions)) {
+            $sql .= " AND (" . implode(" OR ", $conditions) . ")";
         }
     }
 
-    $sql .= " GROUP BY sanpham.ma_san_pham
-              ORDER BY sanpham.ma_san_pham DESC";
-    $list_product = pdo_query($sql);
-    return $list_product;
+    if ($custom_min_price > 0 || $custom_max_price > 0) {
+        if ($custom_min_price > 0 && $custom_max_price > 0) {
+            $sql .= " AND sanpham.gia BETWEEN $custom_min_price AND $custom_max_price";
+        } elseif ($custom_min_price > 0) {
+            $sql .= " AND sanpham.gia >= $custom_min_price";
+        } elseif ($custom_max_price > 0) {
+            $sql .= " AND sanpham.gia <= $custom_max_price";
+        }
+    }
+
+    $sql .= " GROUP BY sanpham.ma_san_pham ORDER BY sanpham.ma_san_pham DESC";
+    return pdo_query($sql);
 }
 
 
-function loadall_shopiphone($kyw = "", $price_range = "", $custom_min_price = 0, $custom_max_price = 0) {
+function loadall_shopiphone($kyw = "", $price_range = [], $custom_min_price = 0, $custom_max_price = 0) {
     $sql = "SELECT 
                 sanpham.ma_san_pham,
                 sanpham.ten_san_pham,
@@ -343,28 +341,18 @@ function loadall_shopiphone($kyw = "", $price_range = "", $custom_min_price = 0,
 
     // Lọc theo checkbox khoảng giá
     if (!empty($price_range) && $price_range !== "all") {
-        if (is_array($price_range)) {
-            $conditions = [];
-            foreach ($price_range as $range) {
-                if (strpos($range, "+") !== false) {
-                    $price_min = str_replace("+", "", $range);
-                    if (is_numeric($price_min)) {
-                        $conditions[] = "sanpham.gia >= $price_min";
-                    }
-                } elseif (strpos($range, "-") !== false) {
-                    $parts = explode("-", $range);
-                    if (count($parts) === 2 && is_numeric($parts[0]) && is_numeric($parts[1])) {
-                        $price_min = $parts[0];
-                        $price_max = $parts[1];
-                        $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
-                    }
-                } elseif (is_numeric($range)) {
-                    $conditions[] = "sanpham.gia >= $range";
-                }
+        $conditions = [];
+        foreach ($price_range as $range) {
+            if (strpos($range, "+") !== false) {
+                $price_min = str_replace("+", "", $range);
+                $conditions[] = "sanpham.gia >= $price_min";
+            } elseif (strpos($range, "-") !== false) {
+                [$price_min, $price_max] = explode("-", $range);
+                $conditions[] = "(sanpham.gia BETWEEN $price_min AND $price_max)";
             }
-            if (!empty($conditions)) {
-                $sql .= " AND (" . implode(" OR ", $conditions) . ")";
-            }
+        }
+        if (!empty($conditions)) {
+            $sql .= " AND (" . implode(" OR ", $conditions) . ")";
         }
     }
 

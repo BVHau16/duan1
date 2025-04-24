@@ -143,8 +143,10 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
 
         case 'shopiphone':
             $kyw = isset($_POST['kyw']) ? $_POST['kyw'] : "";
-            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : "all";
-            $product_shop_iphone = loadall_shopiphone($kyw, $price_range);
+            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : [];
+            $custom_min_price = isset($_POST['custom_min_price']) ? (int)$_POST['custom_min_price'] : 0;
+            $custom_max_price = isset($_POST['custom_max_price']) ? (int)$_POST['custom_max_price'] : 0;
+            $product_shop_iphone = loadall_shopiphone($kyw, $price_range, $custom_min_price, $custom_max_price);
             include './views/shop/shop-iphone.php';
             break;
 
@@ -164,8 +166,10 @@ if (isset($_GET['act']) && ($_GET['act'] != "")) {
 
         case 'shopxiaomi':
             $kyw = isset($_POST['kyw']) ? $_POST['kyw'] : "";
-            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : "all";
-            $product_shop_xiaomi = loadall_shopxiaomi($kyw, $price_range);
+            $price_range = isset($_POST['price_range']) ? $_POST['price_range'] : [];
+            $custom_min_price = isset($_POST['custom_min_price']) ? (int)$_POST['custom_min_price'] : 0;
+            $custom_max_price = isset($_POST['custom_max_price']) ? (int)$_POST['custom_max_price'] : 0;
+            $product_shop_xiaomi = loadall_shopxiaomi($kyw, $price_range, $custom_min_price, $custom_max_price);
             include './views/shop/shop-xiaomi.php';
             break;
 
