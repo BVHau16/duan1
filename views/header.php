@@ -112,56 +112,56 @@
 
                                 </div>
                                 <div class="header-configure-area">
-    <ul class="nav justify-content-end d-flex align-items-center">
-        <?php if (isset($_SESSION['user'])): ?>
-            <!-- Khi người dùng đã đăng nhập -->
-            <li class="user-hover">
-                <div class="d-flex align-items-center">
-                    <a href="#" class="p-1">
-                    <?php $anh = "./uploads/" .$_SESSION['user']['anh_dai_dien'];  ?>
-                    <img class="rounded-circle header-profile-user" src="<?= $anh ?>" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
-                    </a>
-                    <span>Xin Chào <?php echo htmlspecialchars($_SESSION['user']['ten']); ?></span>
-                </div>
-                <ul class="dropdown-list">
-                    <?php if(($_SESSION['user']['loai_nguoi_dung']) == 'NhanVien' ){
-                        echo '<li><a href="./admin/index.php">Trang Admin</a></li>';
-                    }?>
-                    <li><a href="index.php?act=donhangcuatoi">Danh sách đơn hàng</a></li>
-                    <li><a href="index.php?act=update_account">Cập nhật tài khoản</a></li>
-                  
-                    <li><a href="index.php?act=dangxuat">Đăng xuất</a></li>
-                </ul>
-            </li>
-        <?php else: ?>
-            <!-- Khi người dùng chưa đăng nhập -->
-            <li class="user-hover">
-                <div class="d-flex align-items-center">
-                    <a href="#" class="p-1">
-                        <i class="pe-7s-user"></i>
-                    </a>
-                    <span>Tài khoản</span>
-                </div>
-                <ul class="dropdown-list">
-                    <li><a href="index.php?act=dangnhap">Đăng nhập</a></li>
-                    <li><a href="index.php?act=dangky">Đăng ký</a></li>
-                </ul>
-            </li>
-        <?php endif; ?>
+                                <ul class="nav justify-content-end d-flex align-items-center">
+                                    <?php if (isset($_SESSION['user'])): ?>
+                                        <!-- Khi người dùng đã đăng nhập -->
+                                        <li class="user-hover">
+                                            <div class="d-flex align-items-center">
+                                                <a href="#" class="p-1">
+                                                <?php $anh = "./uploads/" .$_SESSION['user']['anh_dai_dien'];  ?>
+                                                <img class="rounded-circle header-profile-user" src="<?= $anh ?>" alt="Header Avatar" style="width: 40px; height: 40px; object-fit: cover;">
+                                                </a>
+                                                <span>Xin Chào <?php echo htmlspecialchars($_SESSION['user']['ten']); ?></span>
+                                            </div>
+                                            <ul class="dropdown-list">
+                                                <?php if(($_SESSION['user']['loai_nguoi_dung']) == 'NhanVien' ){
+                                                    echo '<li><a href="./admin/index.php">Trang Admin</a></li>';
+                                                }?>
+                                                <li><a href="index.php?act=donhangcuatoi">Danh sách đơn hàng</a></li>
+                                                <li><a href="index.php?act=update_account">Cập nhật tài khoản</a></li>
+                                            
+                                                <li><a href="index.php?act=dangxuat">Đăng xuất</a></li>
+                                            </ul>
+                                        </li>
+                                    <?php else: ?>
+                                        <!-- Khi người dùng chưa đăng nhập -->
+                                        <li class="user-hover">
+                                            <div class="d-flex align-items-center">
+                                                <a href="#" class="p-1">
+                                                    <i class="pe-7s-user"></i>
+                                                </a>
+                                                <span>Tài khoản</span>
+                                            </div>
+                                            <ul class="dropdown-list">
+                                                <li><a href="index.php?act=dangnhap">Đăng nhập</a></li>
+                                                <li><a href="index.php?act=dangky">Đăng ký</a></li>
+                                            </ul>
+                                        </li>
+                                    <?php endif; ?>
 
-        <li>
-            <a href="index.php?act=cart" class="minicart-btn">
-                <i class="pe-7s-shopbag"></i>
-                <div class="notification">
-                    <?php
-                    $cart_count = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
-                    echo $cart_count;
-                    ?>
-                </div>
-            </a>
-        </li>
-    </ul>
-</div>
+                                    <li>
+                                        <a href="index.php?act=cart" class="minicart-btn">
+                                            <i class="pe-7s-shopbag"></i>
+                                            <div class="notification">
+                                                <?php
+                                                $cart_count = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+                                                echo $cart_count;
+                                                ?>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
 
                             </div>
                         </div>

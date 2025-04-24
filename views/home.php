@@ -149,54 +149,55 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="tab1">
                                 <div class="product-carousel-4 slick-row-10 slick-arrow-style">
-
                                     <?php
+                                        foreach ($product_iphone as $product) {
+                                            extract($product);
+                                            $anh = "./uploads/" . $anh_san_pham;
+                                            $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                                            // Chuyển đổi chuỗi màu sắc thành mảng
+                                            $mau_sac_arr = explode(',', $mau_sac);
 
-
-                                    foreach ($product_iphone as $product) {
-                                        extract($product);
-                                        $anh = "./uploads/" . $anh_san_pham;
-                                        $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
-                                        // Chuyển đổi chuỗi màu sắc thành mảng
-                                        $mau_sac_arr = explode(',', $mau_sac);
-
-                                        echo '                      
-                                                <div class="product-item">
-                                                    <figure class="product-thumb">
-                                                        <a href="'.$linksp.'">
-                                                            <img class="pri-img" src="' . $anh . '" alt="product">
-                                                            <img class="sec-img" src="' . $anh . '" alt="product">
-                                                        </a>
-                                                        <div class="product-badge">
-                                                            <div class="product-label new">
-                                                                <span>new</span>
-                                                            </div>
+                                            echo '
+                                            <div class="product-item">
+                                                <figure class="product-thumb">
+                                                    <a href="' . $linksp . '">
+                                                        <img class="pri-img" src="' . $anh . '" alt="product">
+                                                        <img class="sec-img" src="' . $anh . '" alt="product">
+                                                    </a>
+                                                    <div class="product-badge">
+                                                        <div class="product-label new">
+                                                            <span>new</span>
                                                         </div>
-                                                        
-                                                    </figure>
-                                                    <div class="product-caption text-center">
-                                                        <div class="product-identity">
-                                                            <p class="manufacturer-name"><a href="'.$linksp.'">' . $ten_san_pham . '</a></p>
-                                                        </div>
-                                                        <ul class="color-categories">';
-
-                                                                                    // Đổ danh sách màu sắc
-                                                                                    foreach ($mau_sac_arr as $mau) {
-                                                                                        echo '<li class="d-inline-block mx-1">
-                                                        <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
-                                                    </li>';
-                                                                                    }
-
-                                                                                    echo '</ul>
+                                                    </div>
+                                                </figure>
+                                                <div class="product-caption text-center">
+                                                    <div class="product-identity">
+                                                        <p class="manufacturer-name">
+                                                            <a href="' . $linksp . '">' . $ten_san_pham . '</a>
+                                                        </p>
+                                                    </div>
+                                                    <ul class="color-categories">';
+                                                    
+                                                    // Đổ danh sách màu sắc
+                                                    foreach ($mau_sac_arr as $mau) {
+                                                        echo '
+                                                        <li class="d-inline-block mx-1">
+                                                            <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
+                                                        </li>';
+                                                    }
+                                            
+                                            echo '  
+                                                    </ul>
                                                     <h6 class="product-name">
-                                                        <a href="'.$linksp.'">' . $ten_san_pham . '</a>
+                                                        <a href="' . $linksp . '">' . $ten_san_pham . '</a>
                                                     </h6>
                                                     <div class="price-box">
                                                         <span class="price-regular">' . number_format($gia) . ' đ</span>
                                                     </div>
-                                                    </div>
-                                                </div>';
-                                    }
+                                                </div>
+                                            </div>';
+                                        }
+                                            
                                     ?>
 
                                 </div>
@@ -231,54 +232,55 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="tab1">
                                 <div class="product-carousel-4 slick-row-10 slick-arrow-style">
-
                                     <?php
+                                        foreach ($product_samsung as $product) {
+                                            extract($product);
+                                            $anh = "./uploads/" . $anh_san_pham;
+                                            $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
+                                            // Chuyển đổi chuỗi màu sắc thành mảng
+                                            $mau_sac_arr = explode(',', $mau_sac);
 
-
-                                    foreach ($product_samsung as $product) {
-                                        extract($product);
-                                        $anh = "./uploads/" . $anh_san_pham;
-                                        $linksp = "index.php?act=chitietsanpham&ma_san_pham=" . $ma_san_pham;
-                                        // Chuyển đổi chuỗi màu sắc thành mảng
-                                        $mau_sac_arr = explode(',', $mau_sac);
-
-                                        echo '                      
-                                                <div class="product-item">
-                                                    <figure class="product-thumb">
-                                                        <a href="'.$linksp.'">
-                                                            <img class="pri-img" src="' . $anh . '" alt="product">
-                                                            <img class="sec-img" src="' . $anh . '" alt="product">
-                                                        </a>
-                                                        <div class="product-badge">
-                                                            <div class="product-label new">
-                                                                <span>new</span>
-                                                            </div>
+                                            echo '
+                                            <div class="product-item">
+                                                <figure class="product-thumb">
+                                                    <a href="' . $linksp . '">
+                                                        <img class="pri-img" src="' . $anh . '" alt="product">
+                                                        <img class="sec-img" src="' . $anh . '" alt="product">
+                                                    </a>
+                                                    <div class="product-badge">
+                                                        <div class="product-label new">
+                                                            <span>new</span>
                                                         </div>
-                                                       
-                                                    </figure>
-                                                    <div class="product-caption text-center">
-                                                        <div class="product-identity">
-                                                            <p class="manufacturer-name"><a href="'.$linksp.'">' . $ten_san_pham . '</a></p>
-                                                        </div>
-                                                        <ul class="color-categories">';
-
-                                                                                    // Đổ danh sách màu sắc
-                                                                                    foreach ($mau_sac_arr as $mau) {
-                                                                                        echo '<li class="d-inline-block mx-1">
-                                                        <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
-                                                    </li>';
-                                                                                    }
-
-                                                                                    echo '</ul>
+                                                    </div>
+                                                </figure>
+                                                <div class="product-caption text-center">
+                                                    <div class="product-identity">
+                                                        <p class="manufacturer-name">
+                                                            <a href="' . $linksp . '">' . $ten_san_pham . '</a>
+                                                        </p>
+                                                    </div>
+                                                    <ul class="color-categories">';
+                                                    
+                                                    // Đổ danh sách màu sắc
+                                                    foreach ($mau_sac_arr as $mau) {
+                                                        echo '
+                                                        <li class="d-inline-block mx-1">
+                                                            <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
+                                                        </li>';
+                                                    }
+                                            
+                                            echo '
+                                                    </ul>
                                                     <h6 class="product-name">
-                                                        <a href="'.$linksp.'">' . $ten_san_pham . '</a>
+                                                        <a href="' . $linksp . '">' . $ten_san_pham . '</a>
                                                     </h6>
                                                     <div class="price-box">
                                                         <span class="price-regular">' . number_format($gia) . ' đ</span>
                                                     </div>
-                                                    </div>
-                                                </div>';
-                                    }
+                                                </div>
+                                            </div>';
+                                            
+                                        }
                                     ?>
 
                                 </div>
@@ -321,10 +323,10 @@
                             // Chuyển đổi chuỗi màu sắc thành mảng
                             $mau_sac_arr = explode(',', $mau_sac);
 
-                            echo '                      
+                            echo '
                             <div class="product-item">
                                 <figure class="product-thumb">
-                                    <a href="'.$linksp.'">
+                                    <a href="' . $linksp . '">
                                         <img class="pri-img" src="' . $anh . '" alt="product">
                                         <img class="sec-img" src="' . $anh . '" alt="product">
                                     </a>
@@ -333,30 +335,33 @@
                                             <span>new</span>
                                         </div>
                                     </div>
-                                   
                                 </figure>
                                 <div class="product-caption text-center">
                                     <div class="product-identity">
-                                        <p class="manufacturer-name"><a href="'.$linksp.'">' . $ten_san_pham . '</a></p>
+                                        <p class="manufacturer-name">
+                                            <a href="' . $linksp . '">' . $ten_san_pham . '</a>
+                                        </p>
                                     </div>
                                     <ul class="color-categories">';
-
-                            // Đổ danh sách màu sắc
-                            foreach ($mau_sac_arr as $mau) {
-                                echo '<li class="d-inline-block mx-1">
-                                    <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
-                                </li>';
-                            }
-
-                            echo '</ul>
-                                <h6 class="product-name">
-                                    <a href="'.$linksp.'">' . $ten_san_pham . '</a>
-                                </h6>
-                                <div class="price-box">
-                                    <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                    
+                                    // Đổ danh sách màu sắc
+                                    foreach ($mau_sac_arr as $mau) {
+                                        echo '
+                                        <li class="d-inline-block mx-1">
+                                            <a class="color-circle" href="#" style="background-color: ' . trim($mau) . ';" title="' . ucfirst(trim($mau)) . '"></a>
+                                        </li>';
+                                    }
+                            
+                                    echo '
+                                    </ul>
+                                    <h6 class="product-name">
+                                        <a href="' . $linksp . '">' . $ten_san_pham . '</a>
+                                    </h6>
+                                    <div class="price-box">
+                                        <span class="price-regular">' . number_format($gia) . ' đ</span>
+                                    </div>
                                 </div>
-                                </div>
-                            </div>';
+                            </div>';                            
                         }
                         ?>
 

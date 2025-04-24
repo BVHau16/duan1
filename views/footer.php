@@ -14,7 +14,7 @@
                             <div class="widget-title">
                                 <div class="widget-logo">
                                     <a href="index.html">
-                                        <img src="./views/assets/img/logo/logo.png" alt="brand logo" width="80px" height="80px">
+                                        <img src="./views/assets/img/logo/logo1.png" alt="brand logo" width="80px" height="80px">
                                     </a>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="copyright-text text-center">
-                            <p>&copy; 2025 <b>Shop Mobile</b> Made with <i class="fa fa-heart text-danger"></i> by <a href=""><b>Shop Mobile</b></a></p>
+                            <p>&copy; 2025 <b>Mobile Shop</b> Made with <i class="fa fa-heart text-danger"></i> by <a href=""><b>Mobile Shop</b></a></p>
                         </div>
                     </div>
                 </div>
