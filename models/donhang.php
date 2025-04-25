@@ -73,7 +73,7 @@ function update_trang_thai_donhang($id, $trang_thai) {
         return "Chỉ có thể chuyển trạng thái từ 'Chờ xử lý' sang 'Đang giao' hoặc 'Hủy'.";
     }
 
-    if ($current_status === 'Đang giao' && !in_array($trang_thai, ['Đang giao', 'Hủy'])) {
+    if ($current_status === 'Đang giao' && !in_array($trang_thai, ['Hoàn thành', 'Hủy'])) {
         return "Chỉ có thể chuyển trạng thái từ 'Đang giao' sang 'Hoàn thành' hoặc 'Hủy'.";
     }
 
